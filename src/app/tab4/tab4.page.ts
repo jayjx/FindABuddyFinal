@@ -110,7 +110,7 @@ export class Tab4Page implements OnInit {
         this.NewsFeedsmodel = this.NewsFeeds;
         console.log('newsfeedsmodel',this.NewsFeedsmodel);
         this.getlikes(this.NewsFeeds);
-        
+        this.getlikes(this.NewsFeeds);
         }, error => {
             console.log(error);
         });
