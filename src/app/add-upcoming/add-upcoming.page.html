@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create New Activity</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <p>{{planName}} hi</p>
+  <form [formGroup]="addUpcomingForm">
+
+    <ion-item>
+      <ion-label>Activity</ion-label>
+      <ion-input formControlName="activity" [(ngModel)]='planName' readonly></ion-input>
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-label>Activity</ion-label>
+      <ion-select formControlName="activity">
+        <ion-select-option *ngFor="let item of workouts" value={{item.fitnessID}}>      
+          {{item.fitnessName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item> -->
+
+    <ion-item>
+      <ion-label>Buddy</ion-label>
+      <ion-select>
+        <ion-select-option>
+          James
+        </ion-select-option>
+        <ion-select-option>
+          Eric
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Location</ion-label>
+      <ion-input formControlName="location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Date and Time</ion-label>
+      <ion-datetime displayFormat="D MMM YYYY H:mm" min="2020" max="2060" placeholder="Select Date and Time" formControlName="date"></ion-datetime>
+    </ion-item>
+
+    <ion-button expand="block" color="secondary" (click)=add()>Add</ion-button>
+
+      
+
+  </form>
+
+</ion-content>

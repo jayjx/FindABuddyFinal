@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Workout To Plan</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="addWorkoutForm">
+
+  
+      <ion-item>
+        <ion-label>Add To Plan</ion-label>
+        <ion-select formControlName="workoutplan">
+        <ion-select-option *ngFor="let option of workoutplan" [value]="option">
+          {{option}}
+        </ion-select-option>
+      </ion-select>
+      </ion-item>
+      
+          <ion-button expand="block" color="secondary" type="submit" (click)=add()>
+            Add
+           </ion-button>
+      </form>
+      <ion-label color="medium">
+        {{addWorkoutForm.value.workoutplan}}
+        </ion-label>
+     </ion-content>

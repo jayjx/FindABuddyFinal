@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>upcoming-details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="editUpcomingForm">
+    <ion-list *ngFor = "let details of result">
+
+      <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select formControlName="activity" value={{details.fitnessListId}} [(ngModel)]='details.location'>
+          <ion-select-option *ngFor="let item of workouts" value={{item.fitnessID}}>      
+            {{item.fitnessName}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Location</ion-label>
+        <ion-input formControlName="location" value={{details.location}} [(ngModel)]='details.location'></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Buddy</ion-label>
+        <ion-input formControlName="" value={{details.buddy}} [(ngModel)]='details.buddy'></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Date and Time</ion-label>
+        <ion-input formControlName="" value={{details.date}} [(ngModel)]='details.date '></ion-input>
+      </ion-item>
+    
+      <ion-button expend="block" color="secondary" type="submit" (click)="update()">
+        Update
+      </ion-button>
+      <ion-button expend="block" color="secondary" type="submit" (click)="delete()">
+        Delete
+      </ion-button>
+      <ion-button expend="block" color="secondary" type="submit" (click)="delete()">
+        Begin Workout
+      </ion-button>
+    </ion-list>
+
+  </form>
+
+
+
+</ion-content>

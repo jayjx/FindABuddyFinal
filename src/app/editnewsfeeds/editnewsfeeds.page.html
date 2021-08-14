@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit news feeds</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/tab4"></ion-back-button>
+      </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <!-- <img [src]=productImage alt="" class="image-card">
+    <ion-item>
+    <ion-label color="medium"></ion-label>
+    </ion-item>-->
+   
+    <!-- <ion-label *ngIf="editProductForm.controls.name.errors && submitted" color="danger">-->
+   
+    <ion-content>
+      <h1 text-align:center>
+      Edit below
+      </h1>
+      <form [formGroup]="editnewsfeeds" >
+
+        <ion-item>
+          <ion-label>Title</ion-label>
+          <ion-input formControlName="title" value="{{arr.title}}"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="editnewsfeeds.controls.title.errors && submitted">
+            <ion-label color="danger">
+             Title is required
+         </ion-label>
+         </ion-item>
+
+        <ion-item>
+          <ion-label>Caption</ion-label>
+          <ion-input formControlName="caption" value="{{arr.caption}}"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="editnewsfeeds.controls.caption.errors && submitted">
+          <ion-label color="danger">
+            Caption is required
+        </ion-label>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label>Picture</ion-label>
+          <ion-input formControlName="picture" value="{{arr.picture}}"></ion-input>
+          <input class="upload" color="secondary" 
+            style="display: none" type="file" (change)="onFileChanged($event)" 
+            #fileInput >
+            <img [src]="source" >
+          <ion-button color="secondary" (click)="fileInput.click()">Select File to upload</ion-button>
+        </ion-item>
+        <ion-item *ngIf="editnewsfeeds.controls.picture.errors && submitted">
+          <ion-label color="danger">
+            Picture is required
+        </ion-label>
+        </ion-item>
+
+
+
+        <ion-item>
+          <ion-label>Date created</ion-label>
+          <ion-input formControlName="createdate" value="{{arr.create_date}}"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Last Edited Date</ion-label>
+          <ion-input formControlName="editdate" value="{{arr.edit_date}}"></ion-input>
+        </ion-item>
+          <ion-button expand="block" color="secondary" (click)=update()>Update</ion-button>
+        </form>
+    </ion-content>
+    
+
+
+
+    <!-- </ion-item> -->
+    <!-- <ion-item>
+    <ion-label>Category</ion-label>
+    <ion-select formControlName="category" value={{item.prodCategory}} >
+    <ion-select-option *ngFor="let option of categories" [value]="option">
+    {{option}}
+    </ion-select-option>
+    </ion-select>
+    </ion-item>
+    <ion-item>
+    <ion-label>Vegetarian </ion-label>
+    <iontoggle formControlName="vegetarian" checked={{item.prodVegetarian}}></iontoggle>
+    </ion-item> -->

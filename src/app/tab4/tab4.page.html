@@ -1,0 +1,50 @@
+<ion-header [translucent]="true"> 
+  <ion-toolbar>
+    <ion-title>News Feeds</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="secondary" [routerLink]="['/addnewsfeeds']">
+      <ion-icon color="secondary" slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-searchbar #searchBar (ionChange)=search($event)></ion-searchbar>
+      <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <div id="container" *ngIf="NewsFeeds.length == 0">
+    <strong>There are no newsfeeds</strong>
+  </div>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" *ngFor="let item of NewsFeeds">
+        <div class="product-card">
+          <div class= "title">Title: {{item.title}}</div>
+          <img [src]=item.picture e class="image-card">
+           <div>Caption :{{item.caption}}</div>
+            <div>Create Date: {{item.create_date}} Edit Date: {{item.edit_date}}</div>
+                <div>Uploaded By: {{item.userID}}</div>
+    
+      <ion-icon class="r" name="heart" (click)=addToFav(item)></ion-icon>
+      <ion-icon class="l" name="create-outline" [routerLink]="['/editnewsfeeds',item.idNewsFeeds,item.userID]" [queryParams]="{idNewsFeeds: item.idNewsFeeds, userID:item.userID}"
+      (click) ='validate(item)' ></ion-icon>
+      <ion-icon class="r" name="trash-outline" id={item.idNewsFeeds} (click) ='delete(item)' ></ion-icon>
+      <div *ngFor="let item of NewsfeedsLikes">Likes: {{item.likes}}</div>
+      
+      
+      
+    </div>
+    
+  </ion-col>
+  </ion-row>
+  </ion-grid>
+  
+</ion-content>
+
+

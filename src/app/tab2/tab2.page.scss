@@ -1,0 +1,35 @@
+h2 {
+  font-size: 20px;
+}
+
+.upcoming {
+  flex-direction: column;
+  padding: 0px 10px;
+}
+
+.upcoming-card {
+  width: 100%;
+  padding: 10px 5px;
+}
+
+.card-subtitle {
+  float: left;
+}
+
+.card-content {
+  border-bottom: 1px solid black;
+  padding: 0px;
+}
+
+.notify-btn {
+  width: 30px;
+  height: 30px;
+  --box-shadow: none;
+}
+
+ion-item {
+  --inner-padding-bottom: 0;
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-top: 0;
+}

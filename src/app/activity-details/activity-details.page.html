@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Activity</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="danger"  (click)="delete()">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngFor = "let details of result">
+  <div class="card">
+    <div class="image">
+      <img src="../../assets/img/bench.jpg" alt="Workout Image">
+    </div>
+
+    <div class="card-content">
+      <div class="card-title">
+        <h1 class="ion-no-margin">{{details.PlanTypeName | titlecase}}</h1>
+      </div>
+    </div>
+
+    <div class="rates">
+      <p class="tag"><ion-icon class="icon" name="people-outline"></ion-icon>{{details.buddy}}</p>   
+      <p class="tag"><ion-icon class="icon" name="location-outline"></ion-icon>{{details.location}}</p>
+      <p class="tag"><ion-icon class="icon" name="timer-outline"></ion-icon>{{details.PlanTypeDuration}}</p>   
+    </div>
+
+    <div class="contents">
+      <p><b>Date and Time:</b> {{details.date | date:'dd MMMM yyyy HH:mm'}}</p>
+    </div>
+
+    <ion-slides class="slides" [options]="slidesOptions">
+      <ion-slide  *ngFor="let item of workoutItems">
+        <ion-card class="workout-card">
+          <ion-card-header>
+            
+            <iframe width="100%" height="150"
+            [src]="item.fitnessDescription | safe: 'resourceUrl'">
+            </iframe>
+
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+            <div>
+              <ion-card-title>Name: {{item.fitnessName}}</ion-card-title>
+              <ion-card-subtitle>Sets: {{item.fitnessSet}} | Reps: {{item.fitnessReps}} | Duration: {{item.fitnessDuration}} mins</ion-card-subtitle>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+
+    <ion-button expend="block" class="beginBtn" (click)="completed()">
+      Begin Workout
+    </ion-button>
+  </div>
+
+
+</ion-content>

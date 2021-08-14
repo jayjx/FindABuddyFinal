@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+    <ion-title>My Buddies</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="upcoming-card" *ngFor="let item of buddy">
+    <ion-card-content style="padding: 0px">
+      <ion-item lines="none" class="card-content">
+        <h2>{{item.username}}</h2>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

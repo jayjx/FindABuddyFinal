@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>create-workout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list lines="none">
+    <form [formGroup]="myForm">
+      <ion-item *ngFor="let control of myForm.controls | keyvalue">
+        <ion-input
+          required
+          type="text"
+          [formControlName]="control.key"
+          placeHolder="player name..."
+        ></ion-input>
+      </ion-item>
+    </form>
+  </ion-list>
+
+  <ion-button expand="full" color="light" (click)="addControl()"
+  >Add Player</ion-button
+>
+
+</ion-content>

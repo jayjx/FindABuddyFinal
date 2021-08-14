@@ -1,0 +1,99 @@
+<ion-header no-header>
+  <ion-toolbar>
+    <ion-title>
+      Activities
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" [routerLink]="['/add-upcoming']">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-toolbar>
+    <ion-segment mod="md" [(ngModel)]="segment" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value ="0">
+        Upcoming
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        Completed
+      </ion-segment-button>
+    </ion-segment>
+
+  </ion-toolbar>
+
+  <ion-slides  [fullscreen]="true" #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slidesChange(slides)" (ionSlidesDidLoad)="slidesChange(slides)">
+    
+    <ion-slide class="upcoming">
+
+      <div id="container" style="display: block;"></div>
+
+      <ion-card class="upcoming-card" *ngFor="let item of upcomings">
+        <ion-card-header>
+          <ion-card-subtitle class="card-subtitle">
+            {{item.date | date:'dd MMMM yyyy HH:mm'}}
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content style="padding: 0px">
+          <ion-item lines="none" class="card-content"  [routerLink]="['/activity-details', item.UpcomingID]">
+            <h2>{{item.PlanTypeName | titlecase}}</h2>
+            <ion-fab horizontal="end" (click)="myNotification()">
+              <ion-fab-button class="notify-btn" color="none">
+                <ion-icon *ngIf="item.notification === 0" name="notifications-off-circle-outline"></ion-icon>
+                <ion-icon *ngIf="item.notification === 1" name="notifications-circle-outline"></ion-icon>
+              </ion-fab-button>
+            </ion-fab>
+          </ion-item>
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-item class="ion-no-padding" lines="none" text-wrap>
+              <ion-icon name="location-outline"></ion-icon>
+              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">{{item.location}}</p>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item class="ion-no-padding" lines="none" text-wrap>
+              <ion-icon name="people-outline"></ion-icon>
+              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">{{item.buddy}}</p>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-slide>
+
+    <ion-slide class="upcoming">
+      <ion-card class="upcoming-card" *ngFor="let item of completed">
+        <ion-card-header>
+          <ion-card-subtitle class="card-subtitle">
+            {{item.completedDate | date:'dd MMMM yyyy HH:mm'}}
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content style="padding: 0px">
+          <ion-item lines="none" class="card-content"  [routerLink]="['/upcoming-details', item.completedID]">
+            <h2>{{item.PlanTypeName | titlecase}}</h2>
+          </ion-item>
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-item class="ion-no-padding" lines="none" text-wrap>
+              <ion-icon name="location-outline"></ion-icon>
+              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">{{item.completedLocation}}</p>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item class="ion-no-padding" lines="none" text-wrap>
+              <ion-icon name="people-outline"></ion-icon>
+              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">{{item.completedBuddy}}</p>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-slide>  
+
+  </ion-slides>
+
+</ion-content>

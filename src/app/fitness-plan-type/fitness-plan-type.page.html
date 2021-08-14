@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Plan Type</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of PlanType">
+      <ion-label>
+        <h2>{{item.PlanTypeName}}</h2>
+
+    </ion-label>
+  
+    </ion-item>
+    </ion-list>
+
+</ion-content>

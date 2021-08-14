@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Workout</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    
+    <form [formGroup]="editworkoutForm">
+<ion-list>
+      <ion-item>
+        <ion-label>Body Part</ion-label>
+        <ion-input formControlName="bodypart" ></ion-input>
+        </ion-item>
+  
+        <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-input formControlName="name" ></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label>Description</ion-label>
+          <ion-input formControlName="description" ></ion-input>
+          </ion-item>
+  
+        <ion-item>
+        <ion-label>Sets</ion-label>
+        <ion-input type="number" formControlName="sets"></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label>Reps</ion-label>
+          <ion-input type="number" formControlName="reps"></ion-input>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label>Duration</ion-label>
+            <ion-input formControlName="duration" ></ion-input>
+            </ion-item>
+  
+            <ion-item>
+              <ion-label>Difficulty</ion-label>
+              <ion-input formControlName="difficulty" ></ion-input>
+              </ion-item>
+
+    
+    <ion-button expand="block" color="secondary" (click)="update()">
+      Update
+      </ion-button>
+
+    </ion-list>
+  </form>
+</ion-content>
