@@ -149,6 +149,7 @@ export class Tab4Page implements OnInit {
       this.NewsfeedsLikes = data;
       }, error => {
           console.log(error);
+          console.log(error);
       });
     }
 
