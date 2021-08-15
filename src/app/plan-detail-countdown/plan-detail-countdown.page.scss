@@ -1,0 +1,15 @@
+#progress-circle {
+    margin-top: 50px;
+    transform: rotate(-98deg);
+
+}
+
+
+.timer-text {
+    transform: rotate(98deg);
+    transform-origin: center;
+    font-size: 36px;
+    text-anchor: middle;
+    font-weight: 600;
+    fill: #333;
+}

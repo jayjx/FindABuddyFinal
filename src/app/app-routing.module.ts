@@ -217,6 +217,11 @@ const routes: Routes = [
     path: 'buddy',
     loadChildren: () => import('./buddy/buddy.module').then( m => m.BuddyPageModule)
   },
+  {
+    path: 'plan-detail-countdown/:dataObj',
+    loadChildren: () => import('./plan-detail-countdown/plan-detail-countdown.module').then( m => m.PlanDetailCountdownPageModule)
+  },
+
 ];
 @NgModule({
   imports: [
