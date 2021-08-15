@@ -28,17 +28,15 @@
           <div class= "title">Title: {{item.title}}</div>
           <img [src]=item.picture e class="image-card">
            <div>Caption :{{item.caption}}</div>
-            <div>Create Date: {{item.create_date}} Edit Date: {{item.edit_date}}</div>
+            <div>Create Date: {{item.create_date}}</div>
+              <div>Edit Date: {{item.edit_date}}</div>
                 <div>Uploaded By: {{item.userID}}</div>
     
       <ion-icon class="r" name="heart" (click)=addToFav(item)></ion-icon>
       <ion-icon class="l" name="create-outline" [routerLink]="['/editnewsfeeds',item.idNewsFeeds,item.userID]" [queryParams]="{idNewsFeeds: item.idNewsFeeds, userID:item.userID}"
       (click) ='validate(item)' ></ion-icon>
       <ion-icon class="r" name="trash-outline" id={item.idNewsFeeds} (click) ='delete(item)' ></ion-icon>
-      <div *ngFor="let item of NewsfeedsLikes">Likes: {{item.likes}}</div>
-      
-      
-      
+      <div *ngFor="let item of NewsfeedsLikes">Likes: {{item.likes}}</div>      
     </div>
     
   </ion-col>
