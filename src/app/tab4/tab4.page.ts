@@ -194,8 +194,6 @@ export class Tab4Page implements OnInit {
         }, error => {
             console.log(error);
         });
-        
-        
       }
       
       async getid1by1(){
@@ -219,7 +217,7 @@ export class Tab4Page implements OnInit {
       async postlikes(){
         var url = 'https://buddyfind.herokuapp.com/Getlikes';
         var getnewsfeedslikeswithid = JSON.stringify({
-          idNewsFeeds : this.newsfeedsIdarr,
+          idNewsFeeds : this.newsfeedsIdarr
           });
         console.log('newsfeedsidforlike', getnewsfeedslikeswithid)
         const httpOptions = {
@@ -231,8 +229,10 @@ export class Tab4Page implements OnInit {
           };
         this.http.post(url, getnewsfeedslikeswithid, httpOptions).subscribe((data) => {
           this.NewsfeedsLikes = data;
-          this.NewsFeedslikesmodel = this.NewsfeedsLikes;
-          console.log('likescount', this.NewsFeedslikesmodel)
+          const obj = {...this.NewsfeedsLikes};
+          console.log('likescount', obj)
+          this.NewsFeedslikesmodel.push(obj)
+          console.log('finallikescount', this.NewsFeedslikesmodel)
           // var likesoutput:any;
           // this.NewsFeeds.array.forEach(this.newfeedsId ,val => {
           //   this.newfeedsId['count'] = val + 1;
@@ -256,14 +256,20 @@ export class Tab4Page implements OnInit {
                 this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
                 console.log('newsfeedsmodelarr',this.newsfeedsIdarr); //Would give you the id of each client
                 this.postlikes();
-                // if (this.postlikes != null)
-                // {
-                //   index ++;
-                //   this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
-                //   this.postlikes();
-                //   this.NewsFeedslikesmodel.push(...this.NewsFeedslikesmodel);
-                //   console.log(index,this.newsfeedsIdarr,this.NewsFeedslikesmodel);
-                // }
+                if (this.postlikes != null)
+                {
+                  for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) 
+                  {
+                  index ++;
+                  console.log(index,this.NewsFeedsmodel[index]);
+                  this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
+                  this.postlikes(); 
+                  console.log('result',index,this.newsfeedsIdarr,this.NewsFeedslikesmodel);
+                  }
+                }
+                else{
+                  return;
+                }
         }
       }
 
