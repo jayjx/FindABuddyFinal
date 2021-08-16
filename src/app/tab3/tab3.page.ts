@@ -220,6 +220,15 @@ userAge: any =[]
    });
    await alert.present(); 
 }
+
+async buddyAlert() {
+  const alert = await this.alertCtrl.create({
+  subHeader: 'Existing Buddy!',
+  message: 'The user is already your buddy!',
+  buttons: ['Dismiss']
+ });
+ await alert.present(); 
+}
   
    sendRequest(list){
     this.submitted =true;
@@ -252,7 +261,13 @@ userAge: any =[]
       if (this.check.length == 1){
         this.presentAlert();
         console.log("request has been sent.") //error msg
-      }else{
+
+      }
+      else if(this.check["message"] == "buddy"){
+        this.buddyAlert();
+        console.log("You are already a buddy.")
+      }
+      else{
         this.requestSent();
       }
       }, error => {
