@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, JsonpClientBackend } from '@angular/common/htt
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -21,11 +21,13 @@ planTypeName : any; //Variable for Plan Type Name
 recommendedPlanDetails :any = []; //Array to store the recommended plan details
 sum : number  = 0; //Variable used to store total duration of the plan
 recommendedString : any; //Variable used for JSON parsing
+recommednedURL : any;
+url : any;
 
-
-  constructor(public route : ActivatedRoute, public http:HttpClient, public navCtrl : NavController, public router : Router) {
+  constructor(public route : ActivatedRoute, public http:HttpClient, public navCtrl : NavController, public router : Router, private dom: DomSanitizer) {
     this.planTypeName = this.route.snapshot.params.planTypeName // Getting the Fitness Plan using constructors
-   }
+    this.recommednedURL = this.dom.bypassSecurityTrustResourceUrl(this.url)
+  }
 
   ngOnInit() {
    // console.log('GIOEOGNSNNDNGSNODGGMN', this.planTypeName);
@@ -55,8 +57,8 @@ recommendedString : any; //Variable used for JSON parsing
         this.recommendedPlanDetails = data // Data recevied from server function from Heroku server, will be stored in recommenedPlanDetails variable
          this.recommendedString = JSON.parse(JSON.stringify(this.recommendedPlanDetails)); // Parse the data to be readable by Ionic for other configurations
         console.log('FFFFFF', this.recommendedString); // Testing for console & debugging purposes
-
-       for (var i = 0 ; i < this.recommendedString.length ; i++) { // For Loop to get the total duration of the workout
+        this.url = this.recommendedString[i]['fitnessDescription'];
+        for (var i = 0 ; i < this.recommendedString.length ; i++) { // For Loop to get the total duration of the workout
             var valuedMember  = parseInt(this.recommendedString[i]['fitnessDuration']); // Created a local variable to store current index fitness duration
             this.sum = this.sum + valuedMember; // When this iterates, the total duration of the plan is stored in sum
        }

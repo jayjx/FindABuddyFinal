@@ -77,6 +77,7 @@ export class Tab1Page {
           this.userDetails = data;
           this.myFitnessLevel = this.userDetails[0].fitnessLevel;
           console.log(this.userDetails[0].fitnessLevel);
+          console.log('User Account Type check',this.userDetails);
           this.getRecommendedPlans();
         } else {
           // this.failed()
