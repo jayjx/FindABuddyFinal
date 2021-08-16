@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="tabs/tab1"></ion-back-button>
@@ -10,17 +10,20 @@
 <ion-content>
   <ion-card *ngFor="let item of recommendedPlanDetails">
     <ion-card-header>
-      <ion-card-subtitle>
+      <ion-card-subtitle class="subtitle">
         {{item.fitnessName}}
       </ion-card-subtitle>
-      <ion-label>{{item.fitnessReps}} Reps, {{item.fitnessSet}} Sets, {{item.fitnessDuration}} minutes</ion-label>
+      <ion-icon name="barbell-outline" class="icons"></ion-icon>
+      <ion-label class="labels">{{item.fitnessReps}} Reps </ion-label>
       <br>
-      <iframe width="100%" height="150"
-      [src]="item.fitnessDescription">
-      </iframe>
+      <ion-icon name="repeat-outline" class="icons"></ion-icon>
+      <ion-label  class="labels"> {{item.fitnessSet}} Sets</ion-label>
+      <br>
+      <ion-icon name="timer-outline" class="icons"></ion-icon>
+      <ion-label  class="labels"> {{item.fitnessDuration}} minutes</ion-label>
     </ion-card-header>
     </ion-card>
-<ion-button (click)='passingTheDataToNextPage()' >Start countdown {{this.sum}}</ion-button>
+<ion-button (click)='passingTheDataToNextPage()' class="buttonCSS">Start countdown {{this.sum}}</ion-button>
 <ion-button [routerLink]="['/add-upcoming', planTypeName]">Invite</ion-button>
 
 

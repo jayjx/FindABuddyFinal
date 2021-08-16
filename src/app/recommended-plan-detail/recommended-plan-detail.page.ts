@@ -26,7 +26,7 @@ url : any;
 
   constructor(public route : ActivatedRoute, public http:HttpClient, public navCtrl : NavController, public router : Router, private dom: DomSanitizer) {
     this.planTypeName = this.route.snapshot.params.planTypeName // Getting the Fitness Plan using constructors
-    this.recommednedURL = this.dom.bypassSecurityTrustResourceUrl(this.url)
+    this.recommednedURL = dom;
   }
 
   ngOnInit() {
@@ -57,7 +57,8 @@ url : any;
         this.recommendedPlanDetails = data // Data recevied from server function from Heroku server, will be stored in recommenedPlanDetails variable
          this.recommendedString = JSON.parse(JSON.stringify(this.recommendedPlanDetails)); // Parse the data to be readable by Ionic for other configurations
         console.log('FFFFFF', this.recommendedString); // Testing for console & debugging purposes
-        this.url = this.recommendedString[i]['fitnessDescription'];
+       // this.url = this.recommendedString[i]['fitnessDescription'];
+    //   this.videoURL(this.recommendedString[i]['fitnessDescription']);
         for (var i = 0 ; i < this.recommendedString.length ; i++) { // For Loop to get the total duration of the workout
             var valuedMember  = parseInt(this.recommendedString[i]['fitnessDuration']); // Created a local variable to store current index fitness duration
             this.sum = this.sum + valuedMember; // When this iterates, the total duration of the plan is stored in sum
@@ -83,6 +84,12 @@ url : any;
     var jsonDataSent = JSON.stringify(this.recommendedPlanDetails); // Strinify JSON data to a readable format by Ionic and jsondatasent is used to pass data to next view
     this.router.navigate(['plan-detail-countdown', jsonDataSent]) // This is the view once user taps on Countdown button
   }
+
+/*   videoURL(urlLink) {
+   // return this.recommednedURL.by
+   return this.recommednedURL.bypassSecurityTrustUrl(urlLink);
+
+  } */
 
   }
 

@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
         this.id = userId.userID;
         console.log('id: ' + this.id)
         this.setLogin()//session
-        this.modalController.dismiss();
+       // this.modalController.dismiss();
         console.log(this.id)
         this.router.navigate(['tabs/tab1/'+this.id]); //Navigate to tab1
    }

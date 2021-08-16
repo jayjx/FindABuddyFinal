@@ -19,13 +19,15 @@ export class Tab4Page implements OnInit {
   NewsFeedsmodel : Newsfeeds[] = [];
   NewsfeedsLikes: any = [];
   NewsFeedslikesmodel : NewsfeedsLikes[] = [];
-  NewsFeedslikesmodelnew : any = {};
+  NewsFeedslikesmodelnew : any = [];
   @ViewChild('searchBar', {static: false}) searchBar: IonSearchbar;
   arr: any = {};
   newsfeedsId: string;
   newsfeedsIdarr: any = {};
   idexist: boolean = false;
+  visible: boolean = true;
   id: string;
+  
   constructor(private Snaprouter:ActivatedRoute,public http: HttpClient, public newsfeedService: NewsfeedsService,
     public toastController: ToastController,public router: Router, public newsfeedlikesService : NewsfeedsLikesService) { 
     this.NewsFeeds = this.newsfeedService.getnewsfeedsservice();
@@ -39,6 +41,7 @@ export class Tab4Page implements OnInit {
   }
   //get userID after login 
 
+    
     async presentToastdelete() {
       const toast = await this.toastController.create({
         message: 'Unable to delete others post',
@@ -59,7 +62,7 @@ export class Tab4Page implements OnInit {
       const { value } = await Storage.get({ key: 'userID' });
       this.id = value;
       console.log('tab4userid: ', this.id);
-      this.getNewsfeeds();
+      this.getNewsfeeds();    
     }
 
     search(event) {
@@ -267,6 +270,10 @@ export class Tab4Page implements OnInit {
                   console.log('result',index,this.newsfeedsIdarr,this.NewsFeedslikesmodel);
                   }
                 }
+                else if  (this.postlikes == null)
+                {
+                  return
+                }
                 else{
                   return;
                 }
@@ -276,17 +283,22 @@ export class Tab4Page implements OnInit {
     validate(item)
     {
       if(item.userID != this.id) {
+        
         this.router.navigate(['tabs/tab4']);
         this.presentToastedit();
+        // var link = document.getElementById("edit");
+        // link.style.visibility = "hidden";
+        // this.visible = false;
+    
       }
     }
 
     delete(item){
       if (item.userID != this.id) {
-        // validate userid
           this.presentToastdelete();
+          this.visible = false;
         }
-      else if(confirm("Are you sure to delete "+ this.id +'?')) {
+      else if(confirm("Are you sure to delete ?")) {
     console.log("deleteuserid:" , this.id)
     var url = 'https://buddyfind.herokuapp.com/Deletenewsfeeds';
     var deletedata = JSON.stringify({
