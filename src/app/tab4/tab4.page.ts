@@ -29,7 +29,7 @@ export class Tab4Page implements OnInit {
   constructor(private Snaprouter:ActivatedRoute,public http: HttpClient, public newsfeedService: NewsfeedsService,
     public toastController: ToastController,public router: Router, public newsfeedlikesService : NewsfeedsLikesService) { 
     this.NewsFeeds = this.newsfeedService.getnewsfeedsservice();
-    this.NewsfeedsLikes = this.newsfeedlikesService.getnewsfeedslikesservice();
+    this.NewsFeedslikesmodel = this.newsfeedlikesService.getnewsfeedslikesservice();
     this.id = this.Snaprouter.snapshot.params.id;
   }
 
@@ -266,6 +266,10 @@ export class Tab4Page implements OnInit {
                   this.postlikes(); 
                   console.log('result',index,this.newsfeedsIdarr,this.NewsFeedslikesmodel);
                   }
+                }
+                else if  (this.postlikes == null)
+                {
+                  return
                 }
                 else{
                   return;
