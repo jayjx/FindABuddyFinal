@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
+import { ModalController } from '@ionic/angular';
+import { UserProfilePage } from '../user-profile/user-profile.page';
+
 
 const { Storage } = Plugins;
 @Component({
@@ -13,6 +16,7 @@ const { Storage } = Plugins;
 export class NotificationPage implements OnInit {
 
   requests: any = [];
+  notifications: any =[];
   submitted: boolean = false;
   USERID: string = '2';
 
@@ -26,46 +30,58 @@ export class NotificationPage implements OnInit {
   buddyid1: string;
   buddyid2: string;
 
-  constructor(private route: ActivatedRoute, public http: HttpClient, private router: Router,  private toastController: ToastController) {
+  today: String = new Date().toISOString();
+  year: any = new Date().getFullYear();
+
+  displayDate: String;
+
+  constructor(private route: ActivatedRoute, public http: HttpClient, private router: Router,  private toastController: ToastController, public modalController: ModalController) {
     this.id = this.route.snapshot.params.id;
     
-    console.log('notiUserid' + this.id)
+    console.log('Userid' + this.id)
    }
 
 
   ngOnInit() {
-    
-    
-    var url = 'https://buddyfind.herokuapp.com/notification/'+this.id+'';
+    this.getRequests();
+    this.getNotification();
+    console.log(this.today)
+  }
+  async getRequests(){
+    var url = 'https://itj-findabuddy.herokuapp.com/notification/'+this.id+'';
     this.http.get(url).subscribe(data => {
       this.requests = data
-      console.log('notidata:' +data)
+      console.log(data)
     })
 
   }
-
-
+  async getNotification(){
+    var urlNotification = 'https://itj-findabuddy.herokuapp.com/requestResult';
+    this.http.get(urlNotification).subscribe(notiData => {
+      this.notifications = notiData
+      console.log(notiData)
+      
+    })
+  }
 
   accept(){
-    var url = 'https://buddyfind.herokuapp.com/update';
+    var url = 'https://itj-findabuddy.herokuapp.com/update';
     var status = "Accepted";
     for (let request of this.requests){
       this.requestId = request.idRequest 
     }
-    var postData = JSON.stringify({
-     requestId: this.requestId,
-     status: "Accepted"
-     
-    });
+
 
     var insertBuddy  = JSON.stringify({
+      requestId: this.requestId,
       userid1: this.id,
       buddyid1: document.getElementById("label2").textContent,
       userid2: document.getElementById("label2").textContent,
       buddyid2: this.id,
+      today: this.today,
+      status: "Accepted",
     })
 
-    console.log('test: ' + postData)
     console.log("insert: " + insertBuddy)
 
     const httpOptions = {
@@ -75,23 +91,6 @@ export class NotificationPage implements OnInit {
         'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
       })
     };
-    this.http.post(url, postData, httpOptions).subscribe((data) => {
-      console.log('postData:', postData)
-      console.log('data', data);
-      console.log(this.requestId)
-      if (data != null)
-      {
-        window.location.reload();
-        console.log(data);
-
-      }
-      else{
-        console.log(data);
-
-        }
-      }, error => {
-          console.log(error);
-      });
 
       this.http.post(url, insertBuddy, httpOptions).subscribe((data) => {
         console.log('postData:', insertBuddy)
@@ -110,20 +109,25 @@ export class NotificationPage implements OnInit {
         }, error => {
             console.log(error);
         });
+     
+    //  window.location.reload();
 
       this.requestAccepted();
-  //    this.router.navigate(['notification/'+this.USERID+'']); //Navigate back after updating the db
+    
+    // this.router.navigate(['notification/'+this.USERID+'']); //Navigate back after updating the db
 
+    // window.location.reload();
     }
 
     reject(){
-      var url = 'https://buddyfind.herokuapp.com/update';
+      var url = 'https://itj-findabuddy.herokuapp.com/update';
       for (let request of this.requests){
         this.requestId = request.idRequest 
       }
       var postData = JSON.stringify({
        requestId: this.requestId,
-       status: "Rejected"
+       status: "Rejected",
+       today: this.today
        
       });
       console.log('test: ' + postData)
@@ -168,12 +172,12 @@ export class NotificationPage implements OnInit {
 
 
 
-      async loginUser() {
-        const { value } = await Storage.get({ key: 'userID' });
-        console.log('Got item: ', value);
-        this.id = value;
-        console.log(this.id)
-      }
+    async loginUser() {
+      const { value } = await Storage.get({ key: 'userID' });
+      console.log('Got item: ', value);
+      this.id = value;
+      console.log(this.id)
+    }
 
   
   async requestAccepted() {
@@ -185,17 +189,68 @@ export class NotificationPage implements OnInit {
     color: 'secondary'
     });
     toast.present();
+    return true;
     }
 
-    async requestRejected() {
-      var requester = document.getElementById("username").textContent;
-      const toast = await this.toastController.create({
-      message: 'You have rejected ' + requester + ' buddy request.',
-      duration: 2000,
-      position: 'top',
-      color: 'secondary'
-      });
-      toast.present();
-      }
+  async requestRejected() {
+    var requester = document.getElementById("username").textContent;
+    const toast = await this.toastController.create({
+    message: 'You have rejected ' + requester + ' buddy request.',
+    duration: 2000,
+    position: 'top',
+    color: 'secondary'
+    });
+    toast.present();
+    }
+    
 
+    async displayProfile(list){
+
+      const modal = await this.modalController.create({
+        
+        component: UserProfilePage,
+        
+        componentProps: {
+          'username': list.username,
+          'gender': list.Gender,
+          'fitnessLevel': list.fitnessLevel,
+          'image': list.image,
+          'age': this.year - Number(list.DOB.slice(-4)),
+        },
+        cssClass: 'my-custom-modal-css',
+        
+
+      })
+      console.log(list)
+      return await modal.present();
+    
+    }
+
+    delete(noti){
+      var url = 'https://itj-findabuddy.herokuapp.com/deleteNoti';
+      var deletedata = JSON.stringify({
+      requestId : noti.idRequest
+      });
+      console.log(noti)
+      const httpOptions = {
+      headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+      })
+      };
+      this.http.post(url, deletedata, httpOptions).subscribe((data) => {
+      console.log('deletedata:', deletedata)
+      console.log(data);
+      if (data != null) {
+        window.location.reload();
+
+      // this.failed()
+      } 
+      }, error => {
+      console.log(error);
+      });
+
+      }
+      
 }

@@ -1,5 +1,6 @@
 <ion-header>
   <ion-toolbar>
+    
     <ion-title>Notification</ion-title>
     <ion-buttons slot="start">
       <ion-back-button  defaultHref="/tabs/tab3"></ion-back-button>
@@ -9,72 +10,29 @@
 
 <ion-content>
     
- <!--  <ion-card>
-    <ion-item *ngFor="let list of requests">
-  
-      <ion-avatar slot="start">
-          <img src="./avatar-rey.png">
-        </ion-avatar> 
-          <ion-label>
-            <ion-grid [fixed]="true">
-
-      <ion-row>
-        <ion-col>
-          <h2 id="username">{{list.username}}</h2>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <h4>{{list.Gender}}</h4>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <h4>{{list.fitnessLevel}}</h4>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <h4>{{list.DOB}}</h4>
-        </ion-col>
-        <ion-col>
-          <div id="updateButton">  
-            <ion-button id="rejectBuddy" size="small" (click)="reject()">
-            <ion-icon style="float: right;" slot="icon-only" name="close-outline"><ion-label id="label1" style="display:none">{{list.userID}}</ion-label><p>Reject</p></ion-icon>
-          </ion-button>
-
-          <ion-button size="small" id="acceptBuddy" (click)="accept()">
-
-            <ion-icon style="float: right;" slot="icon-only" name="checkmark-outline" float-right><ion-label id="label2" style="display:none">{{list.requesterId}}</ion-label></ion-icon>
-          </ion-button>
-          </div>
-        </ion-col>
-
-      </ion-row>
-            
-            </ion-grid>
-          
-          </ion-label>
-    
-        </ion-item>
-  
-    </ion-card>
- -->
-    <ion-card>
+ <!--  
+ <ion-card>
       <ion-list *ngFor="let list of requests">
+    
         <ion-item>
           <ion-avatar slot="start">
             <img [src]=list.image class="image-card">
           </ion-avatar>
-          <ion-label>
-            <div class="test">
-            <h2 id="username">{{list.username}}</h2>
+          
+          <ion-label text-wrap>
+            <div>
+              <div text-wrap>
+            <h4 id="username" (click)="displayProfile(list)" value="list.username" style="text-decoration: underline; font-weight:bold;">{{list.username}} has sent you a buddy request.</h4>
             <h4>{{list.Gender}}</h4>
             <h4>{{list.fitnessLevel}}</h4>
             <h4>{{list.DOB}}</h4>
+            <h4 class="date">{{list.lastUpdated | date: 'dd-MMM-yyyy'}}</h4>
+          </div>
+          </div>
+          </ion-label>
+          <ion-label>
+            <div class="test">
+           
           </div>
           </ion-label>
             <ion-label>
@@ -98,6 +56,62 @@
     
     
     </ion-card>
+  
+  -->
+
+    <ion-card>
+      <ion-list *ngFor="let list of requests">
+        <ion-item>
+          <ion-avatar slot="start">
+            <img [src]=list.image class="image-card">
+          </ion-avatar>
+          <ion-label text-wrap>
+            <div>
+              <div text-wrap>
+                <h4 id="username" (click)="displayProfile(list)" value="list.username"><a>{{list.username}}</a> has sent you a buddy request.</h4>
+                <h4 class="date">{{list.lastUpdated | date: 'dd-MMM-yyyy'}}</h4>
+          </div>
+          </div>
+          </ion-label>
+            <ion-label style="text-align: end; max-width: fit-content">
+              <div id="updateButton">  
+                <ion-button id="rejectBuddy" size="small" (click)="reject()">
+                <ion-icon style="float: right;" slot="icon-only" name="close-outline"><ion-label id="label1" style="display:none">{{list.userID}}</ion-label><p>Reject</p></ion-icon>
+              </ion-button>
     
+              <ion-button size="small" id="acceptBuddy" (click)="accept()">
+    
+                <ion-icon style="float: right;" slot="icon-only" name="checkmark-outline" float-right>
+                  <ion-label id="label2" style="display:none">{{list.requesterId}}</ion-label></ion-icon>
+              </ion-button>
+              </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+
+    <!--Notification (Accept)-->
  
+    <ion-card>
+      <ion-list *ngFor="let noti of notifications">
+        <ion-item>
+          <ion-avatar slot="start">
+            <img [src]=noti.image class="image-card">
+          </ion-avatar>
+          <ion-label text-wrap>
+            <div>
+              <div text-wrap>
+            <h4>{{noti.username}} has accepted your buddy request.</h4>
+            <h4 class="date">{{noti.lastUpdated | date: 'dd-MMM-yyyy'}}</h4>
+          </div>
+          </div>
+          </ion-label>
+            <ion-label style="text-align: end; max-width: fit-content">
+            
+            <ion-icon name="close-outline" slot="end" id={noti.idRequest} (click)="delete(noti)">{{noti.idRequest}}</ion-icon>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+
 </ion-content>

@@ -16,41 +16,30 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header collapse="fullscreen">
+   
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-searchbar (ionChange)=getItems($event)></ion-searchbar>
+      
     </ion-toolbar>
   </ion-header>
 
   
+  <ion-item (click)="search('current')">
+    
+    <ion-icon name="navigate-outline" style='padding-right: 2%;'></ion-icon>Current Location
+  </ion-item>
+   <ion-list *ngIf="isItemAvailable">
+    <ion-item (click)="search(item)" value= "item" *ngFor="let item of items">
+      <ion-icon name="location-outline" style='padding-right: 2%;'></ion-icon>{{item}}
+    </ion-item>
+   
+    
+  </ion-list> 
 
-  <!--Search Form-->
+<!-- 
   <form [formGroup]="searchBuddy" class="searchForm">
     
-   
-<!--     <ion-item> 
-      <ion-label>Age:</ion-label>
-
-      <ion-select formControlName="age">
-          
-        <ion-select-option value="18-21">
-          18-21
-        </ion-select-option>
-
-        <ion-select-option value="22-25">
-          22-25
-        </ion-select-option>
-
-        <ion-select-option value="26-29">
-          26-29
-        </ion-select-option>
-
-        <ion-select-option value="26-29">
-          30 and above
-        </ion-select-option>
-
-      </ion-select>
-    </ion-item> -->
 
     <ion-item class="locationLabel"> 
       <ion-label  class="searchLabel">Location: </ion-label>
@@ -59,38 +48,77 @@
       </ion-label>
       <ion-select formControlName="location">
         
-
-        <ion-select-option value="amk">
+        <ion-select-option value="Aljunied">
+          Aljunied
+        </ion-select-option>
+        <ion-select-option value="Ang Mo Kio">
           Ang Mo Kio
         </ion-select-option>
-
         <ion-select-option value="Bedok">
           Bedok
         </ion-select-option>
-
         <ion-select-option value="Bishan">
           Bishan
         </ion-select-option>
-
-        <ion-select-option value="Toa Payoh">
-          Toa Payoh
+        <ion-select-option value="Boon Lay">
+          Boon Lay
         </ion-select-option>
-
+        <ion-select-option value="Bukit Batok">
+          Bukit Batok
+        </ion-select-option>
+        <ion-select-option value="Bukit Merah">
+          Bukit Merah
+        </ion-select-option>
+        <ion-select-option value="Bukit Panjang">
+          Bukit Panjang
+        </ion-select-option>
+        <ion-select-option value="Bukit Timah">
+          Bukit Timah
+        </ion-select-option>
+        <ion-select-option value="Changi">
+          Changi
+        </ion-select-option>
+        <ion-select-option value="Chao Chu Kang">
+          Chao Chu Kang 
+        </ion-select-option>
+        <ion-select-option value="Clementi">
+          Clementi 
+        </ion-select-option>
+        <ion-select-option value="East Coast">
+          East Coast
+        </ion-select-option>
         <ion-select-option value="Hougang">
           Hougang
         </ion-select-option>
-
+        <ion-select-option value="Jurong">
+          Jurong
+        </ion-select-option>
+        <ion-select-option value="Sembawang">
+          Sembawang
+        </ion-select-option>
+        <ion-select-option value="Tampines">
+          Tampines
+        </ion-select-option>
+        <ion-select-option value="Toa Payoh">
+          Toa Payoh
+        </ion-select-option>
+        <ion-select-option value="Woodlands">
+          Woodlands
+        </ion-select-option>
+      
       </ion-select>
     </ion-item>
 
 
-    <!--add update button-->
     <ion-button expand="block" color="secondary" (click)="search()">
       Search
     </ion-button>
  
     
   </form>
+ -->
+
+
 
 <ion-card>
   <ion-list *ngFor="let list of user">
@@ -103,15 +131,15 @@
         <h2 id="username">{{list.username}}</h2>
         <h4>{{list.Gender}}</h4>
         <h4>{{list.fitnessLevel}}</h4>
-        <h4>{{list.DOB}}</h4>
+          <h4>{{list.DOB}} years old</h4>
       </div>
+      
       </ion-label>
         <ion-label>
         <div id="sendButton">  
-          <ion-button slot="end" id="sendRequest" size="small" (click)="sendRequest()">
+          <ion-button slot="end" id="sendRequest" size="small" (click)="sendRequest(list)" id={list.userID} value="list.userID">
           <ion-icon style="float: right;" slot="icon-only" name="send-outline">
             <ion-label id="label1" style="display:none">{{list.userID}}</ion-label>
-            <p>Reject</p>
           
           </ion-icon>
         </ion-button>
@@ -123,11 +151,10 @@
 
   </ion-list>
 
-
 </ion-card>
 
- 
+
+
+
   </ion-content>
-
-
 

@@ -1,0 +1,44 @@
+
+<ion-content class="img-wrapper">
+
+  <ion-card color="light" class="img-wrapper">
+
+
+    <div class="img-wrapper">
+      
+      <img class="avatar" [src]=image>
+
+      <ion-button color="light">
+        <ion-icon slot="icon-only" name="camera-outline" color="medium">
+        </ion-icon>
+      </ion-button>
+
+    </div>
+    
+
+    <ion-buttons slot="end">
+      <ion-button onclick="dismissModal()">Close</ion-button>
+    </ion-buttons>
+    <ion-card-content class="ion-text-center">
+      <h2>{{username}}</h2>
+      <ion-text color="medium">
+        <div style="display: flex;" class="ion-justify-content-center">
+            <p>Fitness Level: {{fitnessLevel}}</p>
+
+        </div>
+        <div class="ion-justify-content-center">
+          <p>{{gender}}   |    {{age}}</p>
+      </div>
+
+        
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+
+        
+  
+  
+  
+
+</ion-content>

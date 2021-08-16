@@ -16,3 +16,18 @@ ion-content ion-toolbar {
 #updateButton{
     text-align: end;
 }
+
+.date{
+    color:dimgray;
+    font-style: italic;
+    font-size: x-small;
+}
+
+.modal-wrapper {
+    position: absolute;
+    top: 80px;
+    left: 45px;
+    display: block;
+    width: 70%;
+    height: 62%;
+    }
