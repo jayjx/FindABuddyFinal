@@ -49,7 +49,7 @@
             style="display: none" type="file" (change)="onFileChanged($event)" 
             #fileInput >
             <img [src]="source" >
-          <ion-button color="secondary" (click)="fileInput.click()">Select File to upload</ion-button>
+          <ion-button color="secondary" (click)="fileInput.click()">Select Picture</ion-button>
         </ion-item>
         <ion-item *ngIf="editnewsfeeds.controls.picture.errors && submitted">
           <ion-label color="danger">
