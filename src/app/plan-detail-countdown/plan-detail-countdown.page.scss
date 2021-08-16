@@ -1,0 +1,15 @@
+#progress-circle { // Rotate the cirle at -98 deg so it starts at the top instead from the right
+    margin-top: 50px;
+    transform: rotate(-98deg);
+
+}
+
+
+.timer-text { // Position the text in a user friendly way
+    transform: rotate(98deg);
+    transform-origin: center;
+    font-size: 36px;
+    text-anchor: middle;
+    font-weight: 600;
+    fill: #333;
+}

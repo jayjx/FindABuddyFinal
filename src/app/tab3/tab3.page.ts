@@ -86,8 +86,12 @@ userAge: any =[]
       } else {
         
           this.isItemAvailable = false;
+          this.randomUsers();
       }
   }
+
+
+
 
   async loginUser() {
     const { value } = await Storage.get({ key: 'userID' });
@@ -138,6 +142,7 @@ userAge: any =[]
   }
 
   ngOnInit(){
+    //window.location.reload();
     this.loginUser()
     
     this.getCurrentLocation();
@@ -179,25 +184,18 @@ userAge: any =[]
       console.log('data', data);
 
       this.user = data
-      for (let i = 0; i < this.user.length; i++) {
-       this.age = this.year - Number(data[i]["DOB"].slice(-4))
-       data[i]["DOB"] =this.age
-       
-       console.log(data[i]["DOB"])
-       console.log(data)
-      }
+      
       if (this.user.length != 0){
-        
-    
-     
-        console.log("pass")
+        for (let i = 0; i < this.user.length; i++) {
+          this.age = this.year - Number(data[i]["DOB"].slice(-4))
+          data[i]["DOB"] =this.age
+          
+          console.log(data[i]["DOB"])
+          console.log(data)
+         }
       }
-      if (data != null){
-        console.log(data) //error msg
-        this.age = this.year - Number(this.age.slice(-4));
-       console.log(this.age)
-       this.checkAge = true;
-       console.log(this.checkAge)
+      else if (this.user == null){
+       this.randomUsers();
        
       }
       else{
@@ -221,6 +219,15 @@ userAge: any =[]
     buttons: ['Dismiss']
    });
    await alert.present(); 
+}
+
+async buddyAlert() {
+  const alert = await this.alertCtrl.create({
+  subHeader: 'Existing Buddy!',
+  message: 'The user is already your buddy!',
+  buttons: ['Dismiss']
+ });
+ await alert.present(); 
 }
   
    sendRequest(list){
@@ -254,7 +261,13 @@ userAge: any =[]
       if (this.check.length == 1){
         this.presentAlert();
         console.log("request has been sent.") //error msg
-      }else{
+
+      }
+      else if(this.check["message"] == "buddy"){
+        this.buddyAlert();
+        console.log("You are already a buddy.")
+      }
+      else{
         this.requestSent();
       }
       }, error => {
@@ -277,41 +290,33 @@ userAge: any =[]
       toast.present();
       }
 
-      getCurrentLocation(){
-        this.geolocation.getCurrentPosition().then((resp) => {
-          // resp.coords.latitude
-          // resp.coords.longitude
-          this.latitude = resp.coords.latitude;
-          this.longitude = resp.coords.longitude;
-          console.log(this.latitude)
-         }).catch((error) => {
-           console.log('Error getting location', error);
-         });
-         
-         let watch = this.geolocation.watchPosition();
-         watch.subscribe((data) => {
-          // data can be a set of coordinates, or an error (if an error occurred).
-      
-      
-          var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+this.latitude+'&lon='+this.longitude
-          console.log(url)
-          this.http.get(url).subscribe(data => {
-           // this.requests = data
-           this.currentLocation = data["address"]["suburb"]
-            console.log(data["address"]["suburb"])
-          })
+    getCurrentLocation(){
+      this.geolocation.getCurrentPosition().then((resp) => {
+        // resp.coords.latitude
+        // resp.coords.longitude
+        this.latitude = resp.coords.latitude;
+        this.longitude = resp.coords.longitude;
+        console.log(this.latitude)
+        }).catch((error) => {
+          console.log('Error getting location', error);
+        });
+        
+        let watch = this.geolocation.watchPosition();
+        watch.subscribe((data) => {
+        // data can be a set of coordinates, or an error (if an error occurred).
     
-         // return this.currentLocation
-         });
-      } 
-/* 
-      async randomUsers(){
-        var url = 'https://itj-findabuddy.herokuapp.com/randomUsers';
+    
+        var url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+this.latitude+'&lon='+this.longitude
+        console.log(url)
         this.http.get(url).subscribe(data => {
-          this.user = data
-          console.log(data)
+          // this.requests = data
+          this.currentLocation = data["address"]["suburb"]
+          console.log(data["address"]["suburb"])
         })
-      } */
+  
+        // return this.currentLocation
+        });
+    } 
 
     async randomUsers(){
       var url = 'https://itj-findabuddy.herokuapp.com/randomUsers';
@@ -349,14 +354,14 @@ userAge: any =[]
          });
    
     }
-async requestSent() {
-  const alert = await this.alertCtrl.create({
-  subHeader: 'Request Sent!',
-  message: 'Buddy request has been sent.',
-  buttons: ['Dismiss']
- });
- await alert.present(); 
-}
+    async requestSent() {
+      const alert = await this.alertCtrl.create({
+      subHeader: 'Request Sent!',
+      message: 'Buddy request has been sent.',
+      buttons: ['Dismiss']
+    });
+    await alert.present(); 
+    }
 
 
 
