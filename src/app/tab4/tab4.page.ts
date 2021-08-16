@@ -7,7 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Newsfeeds } from '../shared/model/Newsfeeds';
 import { NewsfeedsLikes } from '../shared/model/newsfeedslikes';
-import { variable } from '@angular/compiler/src/output/output_ast';
+import { AlertController } from '@ionic/angular';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-tab4',
@@ -22,14 +23,19 @@ export class Tab4Page implements OnInit {
   NewsFeedslikesmodelnew : any = [];
   @ViewChild('searchBar', {static: false}) searchBar: IonSearchbar;
   arr: any = {};
+  seelikesarr: any = {};
+  seelikesstring : any = {};
   newsfeedsId: string;
   newsfeedsIdarr: any = {};
+  pass1: any;
+  pass2: any;
   idexist: boolean = false;
   visible: boolean = true;
   id: string;
   
   constructor(private Snaprouter:ActivatedRoute,public http: HttpClient, public newsfeedService: NewsfeedsService,
-    public toastController: ToastController,public router: Router, public newsfeedlikesService : NewsfeedsLikesService) { 
+    public toastController: ToastController,public router: Router, public newsfeedlikesService : NewsfeedsLikesService,
+    public alertController: AlertController) { 
     this.NewsFeeds = this.newsfeedService.getnewsfeedsservice();
     this.NewsfeedsLikes = this.newsfeedlikesService.getnewsfeedslikesservice();
     this.id = this.Snaprouter.snapshot.params.id;
@@ -39,9 +45,8 @@ export class Tab4Page implements OnInit {
     this.loginUser()
     //this.getNewsfeeds()
   }
-  //get userID after login 
+  //get userID after login   
 
-    
     async presentToastdelete() {
       const toast = await this.toastController.create({
         message: 'Unable to delete others post',
@@ -84,11 +89,11 @@ export class Tab4Page implements OnInit {
       event.target.complete();
       }
 
-    async likepost(){
+    async likepost(item){
       var url = 'https://buddyfind.herokuapp.com/Likepost';
       var likepost = JSON.stringify({
       userID : this.id,
-      idNewsFeeds : this.newsfeedsId
+      idNewsFeeds : item.idNewsFeeds
       });
       const httpOptions = {
         headers: new HttpHeaders({
@@ -99,17 +104,17 @@ export class Tab4Page implements OnInit {
         };
       this.http.post(url, likepost, httpOptions).subscribe((data) => {
         console.log('data', data);
-    
+        console.log('test', item.idNewsFeeds)
          },error => {
             console.log(error);
         });
       }
 
-    async unlikepost(){
+    async unlikepost(item){
       var url = 'https://buddyfind.herokuapp.com/Unlikepost';
       var unlikepost = JSON.stringify({
       userID : this.id,
-      idNewsFeeds : this.newsfeedsId
+      idNewsFeeds : item.idNewsFeeds
       });
       const httpOptions = {
         headers: new HttpHeaders({
@@ -138,7 +143,7 @@ export class Tab4Page implements OnInit {
       var url = 'https://buddyfind.herokuapp.com/CheckLikes';
       var checklike = JSON.stringify({
       userID : this.id,
-      idNewsFeeds : this.newsfeedsId
+      idNewsFeeds : item.idNewsFeeds
       });
       const httpOptions = {
         headers: new HttpHeaders({
@@ -152,13 +157,13 @@ export class Tab4Page implements OnInit {
         if (data == false)
           {
             toastlike.present(); 
-            this.likepost();
+            this.likepost(item);
             this.getNewsfeeds();
           }
         else
           {
             toastunlike.present(); 
-            this.unlikepost();
+            this.unlikepost(item);
             this.getNewsfeeds();
           }
         }, error => {
@@ -216,7 +221,52 @@ export class Tab4Page implements OnInit {
           return this.newsfeedsId
       }
     }
-    
+
+    async presentAlert(item) {
+      // localStorage.setItem("LikedBy", item);
+      // let storeditem = localStorage.getItem("LikedBy");
+      // let displayitem = JSON.parse(storeditem);
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Liked By',
+        subHeader: '',
+        message: item,
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+  
+      const { role } = await alert.onDidDismiss();
+      console.log('onDidDismiss resolved with role', role);
+    }
+      async seelikes(item){
+        var url = 'https://buddyfind.herokuapp.com/Seelikes';
+        var seelikes = JSON.stringify({
+          idNewsFeeds : item.idNewsFeeds
+          });
+        const httpOptions = {
+          headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+          };
+        this.http.post(url, seelikes, httpOptions).subscribe((data) => {
+          console.log("seelikes",data)
+          if(data == false){
+            this.seelikesarr = ""
+        }
+        else {
+          var re = /{|}|{}|:|,|"|username|[[]|]/g
+          this.seelikesarr = JSON.stringify(data).replace(re, ' ')
+        }
+        this.presentAlert(this.seelikesarr);
+        }, error => {
+          console.log(error);
+      });
+      }
+
+
       async postlikes(){
         var url = 'https://buddyfind.herokuapp.com/Getlikes';
         var getnewsfeedslikeswithid = JSON.stringify({
@@ -235,7 +285,31 @@ export class Tab4Page implements OnInit {
           const obj = {...this.NewsfeedsLikes};
           console.log('likescount', obj)
           this.NewsFeedslikesmodel.push(obj)
+          //this.NewsFeeds.push(obj)
+          console.log('finallikescount', this.NewsFeeds)
           console.log('finallikescount', this.NewsFeedslikesmodel)
+          
+          for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i++){
+            var index = 0;
+            this.pass1 = this.NewsFeedslikesmodel[index][i]['idNewsFeeds']
+            this.pass2 = this.NewsFeedslikesmodel[index][i]['likes']
+            this.changelike( this.pass1,this.pass2)
+            if (index < this.NewsFeedslikesmodel.length)
+            {
+              for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i){
+                index ++;
+                this.pass1 = this.NewsFeedslikesmodel[index][i]['idNewsFeeds']
+                this.pass2 = this.NewsFeedslikesmodel[index][i]['likes']
+                this.changelike( this.pass1,this.pass2)
+                console.log('pass', this.pass1,this.pass2,this.NewsFeedslikesmodel.length)
+              }
+            }
+              else{
+                return
+              }
+          }
+          
+
           // var likesoutput:any;
           // this.NewsFeeds.array.forEach(this.newfeedsId ,val => {
           //   this.newfeedsId['count'] = val + 1;
@@ -251,6 +325,14 @@ export class Tab4Page implements OnInit {
           console.log(error);
       });
       }
+      async changelike( idnewsfeeds, likes ) {
+        for (var i in this.NewsFeeds) {
+          if (this.NewsFeeds[i].idNewsFeeds == idnewsfeeds) {
+            this.NewsFeeds[i].likes = likes;
+            return
+          }
+        }
+     }
 
       async getlikes(){
         for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) 
