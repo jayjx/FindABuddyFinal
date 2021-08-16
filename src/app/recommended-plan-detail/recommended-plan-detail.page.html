@@ -5,17 +5,14 @@
 </ion-header>
 
 <ion-content>
-<ion-item *ngFor="let item of recommendedPlanDetails">
-  <h2>Plan Name : {{item.FitnessPlanType}} </h2>
-<h3>Fitness Difficulty : {{item.fitnessDifficulty}} </h3>
-<h3>Fitness Duration : {{item.fitnessDuration}}</h3>
-<h4>Fitness Name : {{item.fitnessName}} </h4>
-<h4>Reps : {{item.fitnessReps}}</h4>
-<h4>Sets : {{item.fitnessSet}}</h4>
-
-
-
-</ion-item>
+  <ion-card *ngFor="let item of recommendedPlanDetails">
+    <ion-card-header>
+      <ion-card-subtitle>
+        {{item.fitnessName}}
+      </ion-card-subtitle>
+      <ion-label>{{item.fitnessReps}} Reps, {{item.fitnessSet}} Sets, {{item.fitnessDuration}} minutes</ion-label>
+    </ion-card-header>
+    </ion-card>
 <ion-button (click)='passingTheDataToNextPage()' >Start countdown {{this.sum}}</ion-button>
 <ion-button [routerLink]="['/add-upcoming', planTypeName]">Invite</ion-button>
 
