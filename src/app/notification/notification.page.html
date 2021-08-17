@@ -68,18 +68,18 @@
           <ion-label text-wrap>
             <div>
               <div text-wrap>
-                <h4 id="username" (click)="displayProfile(list)" value="list.username"><a>{{list.username}}</a> has sent you a buddy request.</h4>
+                <h4 (click)="displayProfile(list)" value="list.username"><a value= "username" id="username">{{list.username}}</a> has sent you a buddy request.</h4>
                 <h4 class="date">{{list.lastUpdated | date: 'dd-MMM-yyyy'}}</h4>
           </div>
           </div>
           </ion-label>
             <ion-label style="text-align: end; max-width: fit-content">
               <div id="updateButton">  
-                <ion-button id="rejectBuddy" size="small" (click)="reject()">
+                <ion-button id="rejectBuddy" size="small" (click)="reject(list)">
                 <ion-icon style="float: right;" slot="icon-only" name="close-outline"><ion-label id="label1" style="display:none">{{list.userID}}</ion-label><p>Reject</p></ion-icon>
               </ion-button>
     
-              <ion-button size="small" id="acceptBuddy" (click)="accept()">
+              <ion-button size="small" id="acceptBuddy" (click)="accept(list)">
     
                 <ion-icon style="float: right;" slot="icon-only" name="checkmark-outline" float-right>
                   <ion-label id="label2" style="display:none">{{list.requesterId}}</ion-label></ion-icon>

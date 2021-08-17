@@ -9,7 +9,6 @@
 
 <ion-content>
 
-  <p>{{planName}} hi</p>
   <form [formGroup]="addUpcomingForm">
 
     <ion-item>
@@ -28,12 +27,9 @@
 
     <ion-item>
       <ion-label>Buddy</ion-label>
-      <ion-select>
-        <ion-select-option>
-          James
-        </ion-select-option>
-        <ion-select-option>
-          Eric
+      <ion-select formControlName="buddy">
+        <ion-select-option *ngFor="let item of buddy" value={{item.username}}>      
+          {{item.username}}
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -45,7 +41,7 @@
 
     <ion-item>
       <ion-label>Date and Time</ion-label>
-      <ion-datetime displayFormat="D MMM YYYY H:mm" min="2020" max="2060" placeholder="Select Date and Time" formControlName="date"></ion-datetime>
+      <ion-datetime displayFormat="D MMM YYYY H:mm" min="{{dateTill}}" max="2060" placeholder="Select Date and Time" formControlName="date"></ion-datetime>
     </ion-item>
 
     <ion-button expand="block" color="secondary" (click)=add()>Add</ion-button>

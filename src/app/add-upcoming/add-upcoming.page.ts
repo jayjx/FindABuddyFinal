@@ -15,8 +15,12 @@ export class AddUpcomingPage implements OnInit {
 
   addUpcomingForm: FormGroup;
   workouts: any = [];
+  buddy: any = [];
 
   planName: any;
+
+  today = new Date();
+  dateTill: string;
 
   constructor(
     private router: Router,
@@ -24,22 +28,27 @@ export class AddUpcomingPage implements OnInit {
     public route: ActivatedRoute
   ) {
     this.addUpcomingForm = new FormGroup({
-      date: new FormControl(''),
+      date: new FormControl('', [Validators.required]),
       location: new FormControl('', [Validators.required]),
-      activity: new FormControl(''),
+      activity: new FormControl('', [Validators.required]),
+      buddy: new FormControl(''),
     });
 
     this.planName = this.route.snapshot.params.planID;
+    this.today.setDate(this.today.getDate() + 1);
+    this.dateTill = this.today.toISOString().substr(0, 10);
   }
 
   async loginUser() {
     const { value } = await Storage.get({ key: 'userID' });
     console.log('tab3userid: ', value);
     this.userID = value;
+    this.getBuddy();
   }
 
   ngOnInit() {
     this.getChest();
+    this.loginUser();
   }
 
   async add() {
@@ -54,6 +63,7 @@ export class AddUpcomingPage implements OnInit {
         upcomingDateTime: this.addUpcomingForm.value['date'],
         upcomingLocation: this.addUpcomingForm.value['location'],
         upcomingActivity: this.addUpcomingForm.value['activity'],
+        upcomingBuddy: this.addUpcomingForm.value['buddy'],
       });
       const httpOptions = {
         headers: new HttpHeaders({
@@ -86,5 +96,35 @@ export class AddUpcomingPage implements OnInit {
     this.http.get(url).subscribe((data) => {
       this.workouts = data;
     });
+  }
+
+  async getBuddy() {
+    var url = 'https://buddy-deploy.herokuapp.com/getBuddy';
+    var postData = JSON.stringify({
+      userID: this.userID,
+    });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      }),
+    };
+    console.log(this.userID);
+    this.http.post(url, postData, httpOptions).subscribe(
+      (data) => {
+        console.log('postData:', postData);
+        console.log(data);
+        console.log(this.userID);
+        if (data != null) {
+          this.buddy = data;
+        } else {
+          // this.failed()
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

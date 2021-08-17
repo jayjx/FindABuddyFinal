@@ -21,6 +21,7 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   id: string;
   userEmail: string; 
+  username: string; 
 
   constructor(private route: ActivatedRoute, public http: HttpClient, private router: Router, private modalController:ModalController, private toast:ToastController,) { 
     this.loginForm = new FormGroup({
@@ -63,6 +64,7 @@ export class LoginPage implements OnInit {
         this.authentication= data        
       for (let userId of this.authentication ) {
         this.id = userId.userID;
+        this.username = userId.username
         console.log('id: ' + this.id)
         this.setLogin()//session
        // this.modalController.dismiss();
@@ -82,8 +84,13 @@ export class LoginPage implements OnInit {
   }
   async setLogin() {
     await Storage.set({
-      key: 'userID',
-      value: this.id
+      key: 'userID', 
+      value: this.id, 
+      
+    });
+    await Storage.set({
+      key: 'username', 
+      value: this.username,
     });
   
     let toast = await this.toast.create({
