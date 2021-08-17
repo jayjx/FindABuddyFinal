@@ -108,8 +108,10 @@ export class ActivityDetailsPage implements OnInit {
 
     var postData = JSON.stringify({
       UpcomingID: this.UpcomingID,
+      
+      
     });
-
+    console.log(this.UpcomingID);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
