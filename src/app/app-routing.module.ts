@@ -221,7 +221,10 @@ const routes: Routes = [
     path: 'plan-detail-countdown/:dataObj',
     loadChildren: () => import('./plan-detail-countdown/plan-detail-countdown.module').then( m => m.PlanDetailCountdownPageModule)
   },
-
+  {
+    path: 'addworkouttoplan/:id',
+    loadChildren: () => import('./addworkouttoplan/addworkouttoplan.module').then( m => m.AddworkouttoplanPageModule)
+  },
 ];
 @NgModule({
   imports: [

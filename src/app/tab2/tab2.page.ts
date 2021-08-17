@@ -13,6 +13,7 @@ const { Storage } = Plugins;
 })
 export class Tab2Page {
   id: string;
+  username: string;
   completed: any = [];
 
   upcomings: any = [];
@@ -36,9 +37,12 @@ export class Tab2Page {
     console.log('tab3userid: ', value);
     this.id = value;
 
+    
+   
     this.getCompleted();
     this.getMyUpcoming();
   }
+  
 
   async getCompleted() {
     var url = 'https://buddy-deploy.herokuapp.com/getCompleted';
@@ -75,10 +79,16 @@ export class Tab2Page {
   async getMyUpcoming() {
     var url = 'https://buddy-deploy.herokuapp.com/getUpcoming';
 
+    const { value } = await Storage.get({ key: 'username' });
+    console.log('tab3userid: ', value);
+    this.username = value;
+
     var postData = JSON.stringify({
       userID: this.id,
+      userName: this.username
     });
     console.log(this.id);
+    console.log(this.username);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
