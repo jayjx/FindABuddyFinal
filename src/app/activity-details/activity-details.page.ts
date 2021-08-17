@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
+import { formatDate } from '@angular/common';
 
 const { Storage } = Plugins;
 
@@ -18,6 +19,10 @@ export class ActivityDetailsPage implements OnInit {
 
   fitnessName: string;
   workoutItems: any = [];
+
+  dateTill: string;
+
+  currentDate = new Date();
 
   constructor(
     private route: ActivatedRoute,
@@ -137,6 +142,10 @@ export class ActivityDetailsPage implements OnInit {
     console.log('tab3userid: ', value);
     this.userID = value;
 
+    const formatDate1 = formatDate(this.currentDate, 'yyyy-MM-dd  HH:mm:ss' , 'en-US');
+
+    
+
     console.log(this.result[0]);
 
     var url = 'https://buddy-deploy.herokuapp.com/addCompleted';
@@ -145,8 +154,8 @@ export class ActivityDetailsPage implements OnInit {
       UpcomingID: this.result[0].PlanTypeName,
       buddy: this.result[0].buddyName,
       duration: this.result[0].PlanTypeDuration,
-      date: this.result[0].date,
-      location: this.result[0].location,
+      date: formatDate1,
+      location: this.result[0].location, 
     });
     const httpOptions = {
       headers: new HttpHeaders({
@@ -163,6 +172,7 @@ export class ActivityDetailsPage implements OnInit {
           // this.failed()
         } else if (data == true) {
           // this.successful()
+          this.delete();
         }
       },
       (error) => {

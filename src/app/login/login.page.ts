@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
 
   loginButton(){
     this.submitted =true;
-    var url = 'https://buddyfind.herokuapp.com/authentication';
+    var url = 'https://itj-findabuddy.herokuapp.com/authentication';
 
     var email = this.loginForm.value['email']
     var password = this.loginForm.value['password']
@@ -66,6 +66,7 @@ export class LoginPage implements OnInit {
         this.id = userId.userID;
         this.username = userId.username
         console.log('id: ' + this.id)
+        console.log('id: ' + this.username)
         this.setLogin()//session
        // this.modalController.dismiss();
         console.log(this.id)
