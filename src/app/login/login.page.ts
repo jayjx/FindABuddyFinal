@@ -94,12 +94,6 @@ export class LoginPage implements OnInit {
       value: this.username,
     });
   
-    let toast = await this.toast.create({
-      message: 'Login passed ' ,
-      duration: 5000,
-      position: 'top'
-    });
-    return await toast.present();
   
   }
 
