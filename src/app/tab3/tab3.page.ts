@@ -83,6 +83,8 @@ userAge: any =[]
           this.items = this.items.filter((item) => {
               return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
           })
+          
+    
       } else {
         
           this.isItemAvailable = false;
@@ -159,8 +161,10 @@ userAge: any =[]
       item = this.currentLocation
       console.log(item)
     }
-    
-
+    else if (item == null){
+      this.noUserFound();
+    } 
+        
     var postData = JSON.stringify({
       currentUser: this.id,
 
@@ -208,9 +212,6 @@ userAge: any =[]
       })
 
   }
-  
-
-  
 
   async presentAlert() {
     const alert = await this.alertCtrl.create({
@@ -281,13 +282,19 @@ async buddyAlert() {
 
     async noUserFound() {
       //var requester = document.getElementById("username").textContent;
-      const toast = await this.toastController.create({
+      /* const toast = await this.toastController.create({
       message: 'There is no users found based on the selected location.',
       duration: 2000,
       position: 'top',
       color: 'primary'
       });
-      toast.present();
+      toast.present(); */
+      const alert = await this.alertCtrl.create({
+        subHeader: 'No Users Found!',
+        message: 'There is no users found based on the location.',
+        buttons: ['Dismiss']
+      });
+      await alert.present(); 
       }
 
     getCurrentLocation(){

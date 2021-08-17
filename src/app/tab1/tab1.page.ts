@@ -47,7 +47,12 @@ export class Tab1Page {
 
   async loginUser() {
     const { value } = await Storage.get({ key: 'userID' });
+    const { username } = await Storage.get({ key: 'username' });
+
+
     console.log('tab3userid: ', value);
+    console.log('tab3userid: ', username);
+
     this.id = value;
 
     this.getUserDetails();

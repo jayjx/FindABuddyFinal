@@ -19,7 +19,7 @@ export class NotificationPage implements OnInit {
   notifications: any =[];
   submitted: boolean = false;
   USERID: string = '2';
-
+  requester: string;
   userId: string;
   requestId: string;
   status: string;
@@ -53,7 +53,6 @@ export class NotificationPage implements OnInit {
       this.requests = data
       console.log(data)
     })
-
   }
   async getNotification(){
     var urlNotification = 'https://itj-findabuddy.herokuapp.com/requestResult';
@@ -64,16 +63,19 @@ export class NotificationPage implements OnInit {
     })
   }
 
-  accept(){
+  accept(list){
+    console.log("button: " + list.idRequest)
+
     var url = 'https://itj-findabuddy.herokuapp.com/update';
     var status = "Accepted";
-    for (let request of this.requests){
+/*     for (let request of this.requests){
       this.requestId = request.idRequest 
-    }
+    } */
+    console.log(this.requestId)
 
 
     var insertBuddy  = JSON.stringify({
-      requestId: this.requestId,
+      requestId: list.idRequest,
       userid1: this.id,
       buddyid1: document.getElementById("label2").textContent,
       userid2: document.getElementById("label2").textContent,
@@ -119,13 +121,15 @@ export class NotificationPage implements OnInit {
     // window.location.reload();
     }
 
-    reject(){
+    reject(list){
+      console.log("button: " + list.idRequest)
+      this.requester = list.username;
       var url = 'https://itj-findabuddy.herokuapp.com/update';
-      for (let request of this.requests){
+     /*  for (let request of this.requests){
         this.requestId = request.idRequest 
-      }
+      } */
       var postData = JSON.stringify({
-       requestId: this.requestId,
+       requestId: list.idRequest,
        status: "Rejected",
        today: this.today
        
@@ -193,9 +197,9 @@ export class NotificationPage implements OnInit {
     }
 
   async requestRejected() {
-    var requester = document.getElementById("username").textContent;
+   // var requester = document.getElementById("username").textContent;
     const toast = await this.toastController.create({
-    message: 'You have rejected ' + requester + ' buddy request.',
+    message: 'You have rejected ' + this.requester + ' buddy request.',
     duration: 2000,
     position: 'top',
     color: 'secondary'
@@ -206,6 +210,7 @@ export class NotificationPage implements OnInit {
 
     async displayProfile(list){
 
+      console.log(list)
       const modal = await this.modalController.create({
         
         component: UserProfilePage,
@@ -215,6 +220,7 @@ export class NotificationPage implements OnInit {
           'gender': list.Gender,
           'fitnessLevel': list.fitnessLevel,
           'image': list.image,
+          'address': list.address,
           'age': this.year - Number(list.DOB.slice(-4)),
         },
         cssClass: 'my-custom-modal-css',
