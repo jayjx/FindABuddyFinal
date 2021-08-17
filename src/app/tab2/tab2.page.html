@@ -41,10 +41,10 @@
           <ion-item lines="none" class="card-content"  [routerLink]="['/activity-details', item.UpcomingID]">
             <h2>{{item.PlanTypeName | titlecase}}</h2>
             <ion-fab horizontal="end" (click)="myNotification()">
-              <ion-fab-button class="notify-btn" color="none">
+              <!-- <ion-fab-button class="notify-btn" color="none">
                 <ion-icon *ngIf="item.notification === 0" name="notifications-off-circle-outline"></ion-icon>
                 <ion-icon *ngIf="item.notification === 1" name="notifications-circle-outline"></ion-icon>
-              </ion-fab-button>
+              </ion-fab-button> -->
             </ion-fab>
           </ion-item>
         </ion-card-content>
@@ -58,7 +58,8 @@
           <ion-col>
             <ion-item class="ion-no-padding" lines="none" text-wrap>
               <ion-icon name="people-outline"></ion-icon>
-              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">{{item.buddy}}</p>
+              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;" *ngIf = "item.userID != id">{{item.userName}}</p>
+              <p style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;" *ngIf = "item.userID === id">{{item.buddy}}</p>
             </ion-item>
           </ion-col>
         </ion-row>
