@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavController, ToastController } from '@ionic/angular';
+import { color } from 'highcharts';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -37,7 +39,7 @@ export class PlanDetailCountdownPage implements OnInit {
   state : 'start' | 'stop' = 'stop';
 
 
-  constructor( public activatedRoute : ActivatedRoute) { 
+  constructor( public activatedRoute : ActivatedRoute, private toast:ToastController, private navCtrl: NavController) { 
 
    // this.destination = planDetailService.getPlanDetail();
 
@@ -163,7 +165,9 @@ this.iterationNo = 2; // The purpose of this value is lets say the for loop is d
     this.interval = null;
     this.time.next('00:00'); // Set the countdown text to 00:00
     this.state = 'stop';
+    this.informUser();
     this.dataArray = [];
+    this.navCtrl.navigateBack('/tabs/tab1');
     
   }
 
@@ -173,6 +177,17 @@ this.iterationNo = 2; // The purpose of this value is lets say the for loop is d
     const percentFloat = percent / 100;
     return circleDasharray * (1 - percentFloat);
 
+  }
+
+  async informUser() {
+
+    let toast = await this.toast.create({
+      message: 'Fitness Done!' ,
+      duration: 3000,
+      position: 'top',
+    });
+    return await toast.present();
+  
   }
 
 

@@ -51,7 +51,7 @@ export class AddnewsfeedsPage implements OnInit {
   
   add(){this.submitted = true;
     if(this.addnewsfeeds.valid) {
-    if(confirm("Are you sure to add "+ this.id +'?')){
+    if(confirm("Are you sure to add ?")){
     var url = 'https://buddyfind.herokuapp.com/Addnewsfeeds';
     var addnewsfeeds = JSON.stringify({
     userID:this.id,

@@ -135,7 +135,7 @@ export class EditnewsfeedsPage implements OnInit {
   
     update() {this.submitted = true;
       if(this.editnewsfeeds.valid) {
-      if(confirm("Are you sure to update "+ this.id +'?')){
+      if(confirm("Are you sure to update ?")){
       this.submitted = true;
       const formatDate1 = formatDate(this.currentDate, 'yyyy-MM-dd  HH:mm:ss' , 'en-US');
       

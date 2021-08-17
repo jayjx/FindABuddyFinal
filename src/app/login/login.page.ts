@@ -60,6 +60,7 @@ export class LoginPage implements OnInit {
       console.log(postData)
       if (data[0] != null) {   
         console.log(data)
+       
         this.authentication= data        
       for (let userId of this.authentication ) {
         this.id = userId.userID;

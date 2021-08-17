@@ -24,8 +24,14 @@ export class Tab1Page {
 
   completedAmt: string;
 
+  completedAmtNum: number;
+
+  compltedTotal: any = [];
+
   recommendedPlan: any = [];
   myFitnessLevel: string;
+
+  fitnessLevel: string;
 
   constructor(public http: HttpClient, private router: Router) {}
 
@@ -57,6 +63,7 @@ export class Tab1Page {
 
     this.getUserDetails();
     this.getCompleted();
+    this.getTotal();
   }
 
   async getUserDetails() {
@@ -82,6 +89,7 @@ export class Tab1Page {
           this.userDetails = data;
           this.myFitnessLevel = this.userDetails[0].fitnessLevel;
           console.log(this.userDetails[0].fitnessLevel);
+          console.log('User Account Type check', this.userDetails);
           this.getRecommendedPlans();
         } else {
           // this.failed()
@@ -148,6 +156,9 @@ export class Tab1Page {
           this.completed = data;
           console.log(this.completed.length);
           this.completedAmt = this.completed.length;
+          this.completedAmtNum = this.completed.length;
+
+          this.updateLevel();
         } else {
           // this.failed()
         }
@@ -156,6 +167,21 @@ export class Tab1Page {
         console.log(error);
       }
     );
+  }
+
+  async updateLevel() {
+    console.log(this.completedAmtNum);
+    if (this.completedAmtNum > 5) {
+      this.fitnessLevel = 'Beginner';
+      console.log(this.fitnessLevel);
+    }
+    if (this.completedAmtNum > 10) {
+      this.fitnessLevel = 'Intermediate';
+    }
+
+    if (this.completedAmtNum > 20) {
+      this.fitnessLevel = 'Expert';
+    }
   }
 
   ionViewDidEnter() {
@@ -220,5 +246,37 @@ export class Tab1Page {
       this.badges = data;
       console.log(data);
     });
+  }
+
+  async getTotal() {
+    var url = 'https://buddy-deploy.herokuapp.com/getTotal';
+
+    var postData = JSON.stringify({
+      userID: this.id,
+    });
+    console.log(this.id);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      }),
+    };
+    console.log(this.id);
+    this.http.post(url, postData, httpOptions).subscribe(
+      (data) => {
+        console.log('postData:', postData);
+        console.log(data);
+        console.log(this.id);
+        if (data != null) {
+          this.compltedTotal = data;
+        } else {
+          // this.failed()
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }
