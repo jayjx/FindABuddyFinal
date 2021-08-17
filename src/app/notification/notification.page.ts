@@ -65,6 +65,7 @@ export class NotificationPage implements OnInit {
 
   accept(list){
     console.log("button: " + list.idRequest)
+    this.requester = list.username;
 
     var url = 'https://itj-findabuddy.herokuapp.com/update';
     var status = "Accepted";
@@ -185,9 +186,9 @@ export class NotificationPage implements OnInit {
 
   
   async requestAccepted() {
-    var requester = document.getElementById("username").textContent;
+    //var requester = document.getElementById("username").textContent;
     const toast = await this.toastController.create({
-    message: 'You have accepted ' + requester + ' buddy request.',
+    message: 'You have accepted ' + this.requester + ' buddy request.',
     duration: 1000,
     position: 'top',
     color: 'secondary'
