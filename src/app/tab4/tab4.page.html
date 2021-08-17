@@ -35,9 +35,9 @@
                 <div (click) ='seelikes(item)'>Likes: {{item.likes}}</div>
     
       <ion-icon class="r" name="heart" (click)=addToFav(item)></ion-icon>
-      <ion-icon id='validate1' class="l" name="create-outline" [routerLink]="['/editnewsfeeds',item.idNewsFeeds,item.userID]" [queryParams]="{idNewsFeeds: item.idNewsFeeds, userID:item.userID}"
+      <ion-icon id="{{'v1' + item.idNewsFeeds}}" class="l" name="create-outline" [routerLink]="['/editnewsfeeds',item.idNewsFeeds,item.userID]" [queryParams]="{idNewsFeeds: item.idNewsFeeds, userID:item.userID}"
       (click) ='validate(item)'></ion-icon>
-      <ion-icon id='validate2' class="r" name="trash-outline" (click) ='delete(item)' ></ion-icon>
+      <ion-icon id="{{'v2' + item.idNewsFeeds}}" class="r" name="trash-outline" (click) ='delete(item)' ></ion-icon>
       <!-- <div *ngFor="let item of NewsfeedsLikes" >Likes: {{item.likes}}</div>  -->
       <div id = 'likes'></div>
     </div>

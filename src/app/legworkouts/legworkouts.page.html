@@ -18,6 +18,11 @@
         <p>Duration: {{item.fitnessDuration}}</p>
         <p>Difficulty: {{item.fitnessDifficulty}}</p>
     </ion-label>
+    <ion-buttons slot="end">
+      <ion-button color="primary" [routerLink]="['/addworkouttoplan']">
+      <ion-icon  *ngIf="isShown" slot="end" name="add" (click) ='checkadmin()'></ion-icon>
+      </ion-button>
+      </ion-buttons>
     </ion-item>
     </ion-list>
 
