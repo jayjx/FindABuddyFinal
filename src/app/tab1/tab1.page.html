@@ -12,7 +12,7 @@
 
   <ion-item lines="none">
     <ion-avatar slot="start">
-      <img src="https://6.viki.io/image/0abea02ca0804b60a8461fc9698adfb6.jpeg?s=900x600&e=t">
+      <img [src]=item.image>
     </ion-avatar>
     <ion-label>
       <p>Welcome,</p>
@@ -59,7 +59,7 @@
   </div>
 
   <div id="activityChart"></div>
-  <table id="datatable" style="display: none;">
+  <table id="datatable" style="">
     <thead>
       <tr>
         <th></th>
@@ -67,9 +67,9 @@
       </tr>
     </thead>
     <tbody >
-      <tr  *ngFor="let item of completed">
-        <th>{{item.completedDate | date: 'dd MMM YYYY'}}  </th>
-        <td>{{item.completedDuration}}</td>
+      <tr  *ngFor="let item of compltedTotal">
+        <th>{{item.cDate | date: 'dd MMM YYYY'}}  </th>
+        <td>{{item.Total}}</td>
       </tr>
 
     </tbody>
@@ -83,7 +83,7 @@
           <ion-card-content class="ion-text-left badge-card" *ngIf="completedAmt >= item.TotalPoint">
             <div class="badge-image">
               <ion-avatar>
-                <img src="https://6.viki.io/image/0abea02ca0804b60a8461fc9698adfb6.jpeg?s=900x600&e=t">
+                <img [src]=item.image>
               </ion-avatar>
             </div>
             <div>
@@ -95,7 +95,7 @@
           <ion-card-content class="ion-text-left badge-card" *ngIf="completedAmt < item.TotalPoint" style="opacity: 0.5;">
             <div class="badge-image">
               <ion-avatar>
-                <img src="https://6.viki.io/image/0abea02ca0804b60a8461fc9698adfb6.jpeg?s=900x600&e=t">
+                <img [src]=item.image>
               </ion-avatar>
             </div>
             <div>
