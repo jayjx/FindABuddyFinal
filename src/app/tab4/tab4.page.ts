@@ -171,7 +171,7 @@ export class Tab4Page implements OnInit {
               {
                 var index = 0;
                 this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
-                console.log('newsfeedsmodelarr',this.newsfeedsIdarr); //Would give you the id of each client
+                console.log('newsfeedsmodelarr',this.newsfeedsIdarr,this.NewsFeedsmodel[index]); //Would give you the id of each client
                 this.postlikes();
                 if (this.postlikes != null)
                 {
@@ -179,8 +179,10 @@ export class Tab4Page implements OnInit {
                   {
                   index ++;
                   this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
+                  this.postlikes1(); 
                   this.postlikes(); 
                   console.log('id/like',index,this.newsfeedsIdarr);
+                  
                   }
                 }
                 else if  (this.postlikes == null)
@@ -190,9 +192,9 @@ export class Tab4Page implements OnInit {
                 else{
                   return;
                 }
-                
         }
       }
+
       async postlikes(){
         var url = 'https://buddyfind.herokuapp.com/Getlikes';
         var getnewsfeedslikeswithid = JSON.stringify({
@@ -211,7 +213,6 @@ export class Tab4Page implements OnInit {
           const obj = {...this.NewsfeedsLikes};
           console.log('likescount', obj)
           this.NewsFeedslikesmodel.push(obj)
-          //this.NewsFeeds.push(obj)
           console.log('finallikescount', this.NewsFeeds)
           
           for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i++){
@@ -226,22 +227,62 @@ export class Tab4Page implements OnInit {
                 this.pass1 = this.NewsFeedslikesmodel[index][i]['idNewsFeeds']
                 this.pass2 = this.NewsFeedslikesmodel[index][i]['likes']
                 this.changelike( this.pass1,this.pass2)
-                // var link = document.getElementById('validate1');
-                // console.log('test',link)
-                // this.validate1(this.NewsFeeds)
-                // this.validate2(this.NewsFeeds)
+                // this.validate1(this.NewsFeedsmodel[index])
+                //  this.validate2(this.NewsFeedsmodel[index])
                 console.log('pass', this.pass1,this.pass2,this.NewsFeedslikesmodel.length)
               }
             }
-              else{
-                return
-              }
-          }
-          
+            //   else{
+            //     return
+            //   }
+          }    
         }, error => {
           console.log(error);
       });
       }
+
+      async postlikes1(){
+        var url = 'https://buddyfind.herokuapp.com/Getlikes';
+        var getnewsfeedslikeswithid = JSON.stringify({
+          idNewsFeeds : this.newsfeedsIdarr
+          });
+        console.log('newsfeedsidforlike', getnewsfeedslikeswithid)
+        const httpOptions = {
+          headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+          };
+        this.http.post(url, getnewsfeedslikeswithid, httpOptions).subscribe((data) => {
+          this.NewsfeedsLikes = data;
+          const obj = {...this.NewsfeedsLikes};
+          console.log('likescount', obj)
+          this.NewsFeedslikesmodel.push(obj)
+          
+          for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i++){
+            var index = 0;
+            if (index < this.NewsFeedslikesmodel.length)
+            {
+              
+              for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i){
+                index ++;
+                // var link = document.getElementById('validate1');
+                // console.log('test',link)
+                this.validate1(this.NewsFeedsmodel[index])
+                 this.validate2(this.NewsFeedsmodel[index])
+                console.log('pass', this.pass1,this.pass2,this.NewsFeedslikesmodel.length)
+              }
+            }
+            //   else{
+            //     return
+            //   }
+          }
+        }, error => {
+          console.log(error);
+      });
+      }
+
       async changelike( idnewsfeeds, likes ) {
         for (var i in this.NewsFeeds) {
           if (this.NewsFeeds[i].idNewsFeeds == idnewsfeeds) {
@@ -333,36 +374,45 @@ export class Tab4Page implements OnInit {
           console.log(error);
       });
     }
-    // validate1(item)
-    //   {
-    //     for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) {
-    //       var link = document.getElementById("validate1");
-    //       var validateuserid = this.NewsFeedsmodel[i]['userID'];
-    //       if(validateuserid == this.id) {
-    //         link.style.visibility = "visible";
-    //         console.log('validate',item)}
-    //         else{
-    //           link.style.visibility = "hidden";
-    //           return
-    //         }
-    //       }
-    //     }
+
+    validate1(item)
+      {
+        var link = document.getElementById("v1" + item.idNewsFeeds);
+        //console.log('test',link,item.idNewsFeeds)
+        if(item.userID == this.id) {
+          link.style.visibility = "visible";
+          //console.log('v1',item)
+        }
+          else{
+            link.style.visibility = "hidden";
+            return
+        // for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) {
+          
+        //   var validateuserid = this.NewsFeedsmodel[i]['userID'];
+          
+        //     }
+          }
+        }
         
-    // validate2(item)
-    //   {
-    //     for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) {
-    //       var link = document.getElementById("validate2");
-    //       var validateuserid = this.NewsFeedsmodel[i]['userID'];
-    //       if(validateuserid == this.id) {
-    //         link.style.visibility = "visible";
-    //         console.log('validate',item)}
-    //         else{
-    //           link.style.visibility = "hidden";
-    //           return
-    //         }
-    //       }
-    //     }
+    validate2(item)
+    {
+      var link = document.getElementById("v2" + item.idNewsFeeds);
+      //console.log('test',link,item.idNewsFeeds)
+      if(item.userID == this.id) {
+        link.style.visibility = "visible";
+        //console.log('v2',item)
+      }
+        else{
+          link.style.visibility = "hidden";
+          return
+      // for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) {
         
+      //   var validateuserid = this.NewsFeedsmodel[i]['userID'];
+        
+      //     }
+        }
+      }
+
     validate(item)
     {
       if(item.userID != this.id) {
