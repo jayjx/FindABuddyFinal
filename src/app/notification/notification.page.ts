@@ -190,9 +190,8 @@ export class NotificationPage implements OnInit {
     const toast = await this.toastController.create({
     message: 'You have accepted ' + this.requester + ' buddy request.',
     duration: 1000,
-    position: 'top',
-    color: 'secondary'
-    });
+    position: 'bottom',
+     });
     toast.present();
     return true;
     }
@@ -202,8 +201,7 @@ export class NotificationPage implements OnInit {
     const toast = await this.toastController.create({
     message: 'You have rejected ' + this.requester + ' buddy request.',
     duration: 2000,
-    position: 'top',
-    color: 'secondary'
+    position: 'bottom',
     });
     toast.present();
     }
