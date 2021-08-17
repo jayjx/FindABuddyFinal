@@ -1,8 +1,8 @@
-<ion-header class="ion-no-border"  *ngFor="let item of userDetails">
+<ion-header class="ion-no-border" *ngFor="let item of userDetails">
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button class="bordered" [routerLink]="['/buddy']">
-        <ion-icon color="primary" name ="people-outline" ></ion-icon>
+        <ion-icon color="primary" name="people-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title color="primary">
@@ -34,7 +34,7 @@
   <div class="slides ion-margin-bottom">
     <h2>Recommended Workouts</h2>
     <ion-slides [options]="slidesOptions">
-      <ion-slide  *ngFor="let item of recommendedPlan">
+      <ion-slide *ngFor="let item of recommendedPlan">
         <ion-card class="workout-card" [routerLink]="['/recommended-plan-detail', item.PlanTypeName]">
           <ion-card-header>
             <div class="main">
@@ -52,23 +52,23 @@
         </ion-card>
       </ion-slide>
     </ion-slides>
-    
-      <ion-button color="primary" [routerLink]="['/create-workout']">
+
+    <!-- <ion-button color="primary" [routerLink]="['/create-workout']">
         <ion-icon slot="icon-only" name="add"></ion-icon>
-        </ion-button>
+        </ion-button> -->
   </div>
 
   <div id="activityChart"></div>
-  <table id="datatable" style="">
+  <table id="datatable" style="display: none;">
     <thead>
       <tr>
         <th></th>
         <th>Time Active</th>
       </tr>
     </thead>
-    <tbody >
-      <tr  *ngFor="let item of compltedTotal">
-        <th>{{item.cDate | date: 'dd MMM YYYY'}}  </th>
+    <tbody>
+      <tr *ngFor="let item of compltedTotal">
+        <th>{{item.cDate | date: 'dd MMM YYYY'}} </th>
         <td>{{item.Total}}</td>
       </tr>
 
@@ -78,7 +78,7 @@
   <div class="badges-slides ion-margin-bottom">
     <h2>Badges</h2>
     <ion-slides [options]="badgeSlidesOptions">
-      <ion-slide  *ngFor="let item of badges">
+      <ion-slide *ngFor="let item of badges">
         <ion-card>
           <ion-card-content class="ion-text-left badge-card" *ngIf="completedAmt >= item.TotalPoint">
             <div class="badge-image">
@@ -92,7 +92,8 @@
               <ion-progress-bar value="1"></ion-progress-bar>
             </div>
           </ion-card-content>
-          <ion-card-content class="ion-text-left badge-card" *ngIf="completedAmt < item.TotalPoint" style="opacity: 0.5;">
+          <ion-card-content class="ion-text-left badge-card" *ngIf="completedAmt < item.TotalPoint"
+            style="opacity: 0.5;">
             <div class="badge-image">
               <ion-avatar>
                 <img [src]=item.image>
