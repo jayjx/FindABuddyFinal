@@ -181,6 +181,13 @@ export class ActivityDetailsPage implements OnInit {
         console.log(error);
       }
     );
+    this.passingTheDataToNextPage();
     this.router.navigate(['tabs/tab2']);
+  }
+
+  passingTheDataToNextPage() { // This function is when the Countdown button is clicked
+    console.log('Countdown button clicked') 
+    var jsonDataSent = JSON.stringify(this.workoutItems); // Strinify JSON data to a readable format by Ionic and jsondatasent is used to pass data to next view
+    this.router.navigate(['plan-detail-countdown', jsonDataSent]) // This is the view once user taps on Countdown button
   }
 }
