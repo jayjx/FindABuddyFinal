@@ -3,11 +3,9 @@
     <ion-title>
       Fitness List
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button color="primary" [routerLink]="['/addchestworkout']">
-      <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-      </ion-buttons>
+        <ion-icon *ngIf="isShown" slot="end" name="create-outline" [routerLink]="['/addchestworkout']" 
+        (click) ='checkadmin()' ></ion-icon>
+
   </ion-toolbar>
 </ion-header>
 

@@ -8,7 +8,6 @@ import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Newsfeeds } from '../shared/model/Newsfeeds';
 import { NewsfeedsLikes } from '../shared/model/newsfeedslikes';
 import { AlertController } from '@ionic/angular';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-tab4',
@@ -44,6 +43,10 @@ export class Tab4Page implements OnInit {
   ngOnInit() {
     this.loginUser()
     //this.getNewsfeeds()
+    // var link = document.getElementById('validate1');
+    //     console.log('test',link)
+    //   this.validate1(this.NewsFeeds)
+    //   this.validate2(this.NewsFeeds)
   }
   //get userID after login   
 
@@ -77,7 +80,6 @@ export class Tab4Page implements OnInit {
       if (text && text.trim() !== '') {
       this.NewsFeeds = allnewsfeeds.filter(
       item => item.title.toLowerCase().includes(text.toLowerCase()));
-
       } else {
       // Blank text, clear the search, show all products
       this.NewsFeeds = allnewsfeeds;
@@ -88,88 +90,6 @@ export class Tab4Page implements OnInit {
       this.searchBar.value = '';
       event.target.complete();
       }
-
-    async likepost(item){
-      var url = 'https://buddyfind.herokuapp.com/Likepost';
-      var likepost = JSON.stringify({
-      userID : this.id,
-      idNewsFeeds : item.idNewsFeeds
-      });
-      const httpOptions = {
-        headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        })
-        };
-      this.http.post(url, likepost, httpOptions).subscribe((data) => {
-        console.log('data', data);
-        console.log('test', item.idNewsFeeds)
-         },error => {
-            console.log(error);
-        });
-      }
-
-    async unlikepost(item){
-      var url = 'https://buddyfind.herokuapp.com/Unlikepost';
-      var unlikepost = JSON.stringify({
-      userID : this.id,
-      idNewsFeeds : item.idNewsFeeds
-      });
-      const httpOptions = {
-        headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        })
-        };
-      this.http.post(url, unlikepost, httpOptions).subscribe((data) => {
-        console.log('data', data);
-    
-         },error => {
-            console.log(error);
-        });
-      }
-
-    async addToFav(item) {
-      const toastlike = await this.toastController.create(
-        {message: ' Liked Post ' + item.title,
-      duration: 2000,
-      });
-      const toastunlike = await this.toastController.create(
-        {message: ' Unliked Post ' + item.title,
-      duration: 2000,
-      });
-      var url = 'https://buddyfind.herokuapp.com/CheckLikes';
-      var checklike = JSON.stringify({
-      userID : this.id,
-      idNewsFeeds : item.idNewsFeeds
-      });
-      const httpOptions = {
-        headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        })
-        };
-      this.http.post(url, checklike, httpOptions).subscribe((data) => {
-        console.log('data', data);
-        if (data == false)
-          {
-            toastlike.present(); 
-            this.likepost(item);
-            this.getNewsfeeds();
-          }
-        else
-          {
-            toastunlike.present(); 
-            this.unlikepost(item);
-            this.getNewsfeeds();
-          }
-        }, error => {
-          console.log(error);
-      });
-    }
 
     async getNewsfeeds(){
       var url = 'https://buddyfind.herokuapp.com/NewsFeeds';
@@ -188,7 +108,6 @@ export class Tab4Page implements OnInit {
         };
 
       this.http.post(url, getuserID, httpOptions).subscribe((data) => {
-        console.log('data', data);
         this.NewsFeeds = data;
         this.NewsFeedsmodel = this.NewsFeeds;
         console.log('newsfeedsmodel',this.NewsFeedsmodel);
@@ -197,30 +116,11 @@ export class Tab4Page implements OnInit {
         //       this.newsfeedsIdarr = this.NewsFeedsmodel[0]['idNewsFeeds'];
         //       console.log('newsfeedsmodelarr',this.newsfeedsIdarr); //Would give you the id of each client
         //     }
-        this.getid1by1();
         this.getlikes();
         }, error => {
             console.log(error);
         });
       }
-      
-      async getid1by1(){
-        const getidforlike = this.NewsFeedsmodel;
-        for (var i = 0, len = getidforlike.length; i < len; i++)
-        {
-          var getid1by1 = getidforlike[i]['idNewsFeeds'];
-          this.newsfeedsId = getid1by1;
-          if (getid1by1 > 0){
-          this.idexist = true;
-          } 
-          else{
-            this.idexist = false;
-          }
-          console.log("status",this.idexist);
-          console.log("getid1by1",this.newsfeedsId);
-          return this.newsfeedsId
-      }
-    }
 
     async presentAlert(item) {
       // localStorage.setItem("LikedBy", item);
@@ -266,6 +166,34 @@ export class Tab4Page implements OnInit {
       });
       }
 
+      async getlikes(){
+        for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) 
+              {
+                var index = 0;
+                this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
+                console.log('newsfeedsmodelarr',this.newsfeedsIdarr,this.NewsFeedsmodel[index]); //Would give you the id of each client
+                this.postlikes();
+                if (this.postlikes != null)
+                {
+                  for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) 
+                  {
+                  index ++;
+                  this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
+                  this.postlikes1(); 
+                  this.postlikes(); 
+                  console.log('id/like',index,this.newsfeedsIdarr);
+                  
+                  }
+                }
+                else if  (this.postlikes == null)
+                {
+                  return
+                }
+                else{
+                  return;
+                }
+        }
+      }
 
       async postlikes(){
         var url = 'https://buddyfind.herokuapp.com/Getlikes';
@@ -285,9 +213,7 @@ export class Tab4Page implements OnInit {
           const obj = {...this.NewsfeedsLikes};
           console.log('likescount', obj)
           this.NewsFeedslikesmodel.push(obj)
-          //this.NewsFeeds.push(obj)
           console.log('finallikescount', this.NewsFeeds)
-          console.log('finallikescount', this.NewsFeedslikesmodel)
           
           for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i++){
             var index = 0;
@@ -301,30 +227,62 @@ export class Tab4Page implements OnInit {
                 this.pass1 = this.NewsFeedslikesmodel[index][i]['idNewsFeeds']
                 this.pass2 = this.NewsFeedslikesmodel[index][i]['likes']
                 this.changelike( this.pass1,this.pass2)
+                // this.validate1(this.NewsFeedsmodel[index])
+                //  this.validate2(this.NewsFeedsmodel[index])
                 console.log('pass', this.pass1,this.pass2,this.NewsFeedslikesmodel.length)
               }
             }
-              else{
-                return
-              }
-          }
-          
-
-          // var likesoutput:any;
-          // this.NewsFeeds.array.forEach(this.newfeedsId ,val => {
-          //   this.newfeedsId['count'] = val + 1;
-          //   this.NewsfeedsLikes.array.forEach(this.NewsfeedsLikes,val => {
-          //     if (this.newfeedsId == item.idNewsFeeds){
-          //         this.NewsfeedsLikes = likesoutput;
-          //         console.log("likesoutput", this.NewsFeeds.array)
-          //         console.log("likesoutput", likesoutput)
-          //     }
-          //   });
-          // });
+            //   else{
+            //     return
+            //   }
+          }    
         }, error => {
           console.log(error);
       });
       }
+
+      async postlikes1(){
+        var url = 'https://buddyfind.herokuapp.com/Getlikes';
+        var getnewsfeedslikeswithid = JSON.stringify({
+          idNewsFeeds : this.newsfeedsIdarr
+          });
+        console.log('newsfeedsidforlike', getnewsfeedslikeswithid)
+        const httpOptions = {
+          headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+          };
+        this.http.post(url, getnewsfeedslikeswithid, httpOptions).subscribe((data) => {
+          this.NewsfeedsLikes = data;
+          const obj = {...this.NewsfeedsLikes};
+          console.log('likescount', obj)
+          this.NewsFeedslikesmodel.push(obj)
+          
+          for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i++){
+            var index = 0;
+            if (index < this.NewsFeedslikesmodel.length)
+            {
+              
+              for (var i = 0, len = this.NewsFeedslikesmodel.length; i < len; i){
+                index ++;
+                // var link = document.getElementById('validate1');
+                // console.log('test',link)
+                this.validate1(this.NewsFeedsmodel[index])
+                 this.validate2(this.NewsFeedsmodel[index])
+                console.log('pass', this.pass1,this.pass2,this.NewsFeedslikesmodel.length)
+              }
+            }
+            //   else{
+            //     return
+            //   }
+          }
+        }, error => {
+          console.log(error);
+      });
+      }
+
       async changelike( idnewsfeeds, likes ) {
         for (var i in this.NewsFeeds) {
           if (this.NewsFeeds[i].idNewsFeeds == idnewsfeeds) {
@@ -334,31 +292,124 @@ export class Tab4Page implements OnInit {
         }
      }
 
-      async getlikes(){
-        for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) 
-              {
-                var index = 0;
-                this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
-                console.log('newsfeedsmodelarr',this.newsfeedsIdarr); //Would give you the id of each client
-                this.postlikes();
-                if (this.postlikes != null)
-                {
-                  for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) 
-                  {
-                  index ++;
-                  console.log(index,this.NewsFeedsmodel[index]);
-                  this.newsfeedsIdarr = this.NewsFeedsmodel[index]['idNewsFeeds'];
-                  this.postlikes(); 
-                  console.log('result',index,this.newsfeedsIdarr,this.NewsFeedslikesmodel);
-                  }
-                }
-                else if  (this.postlikes == null)
-                {
-                  return
-                }
-                else{
-                  return;
-                }
+     async likepost(item){
+      var url = 'https://buddyfind.herokuapp.com/Likepost';
+      var likepost = JSON.stringify({
+      userID : this.id,
+      idNewsFeeds : item.idNewsFeeds
+      });
+      const httpOptions = {
+        headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+        })
+        };
+      this.http.post(url, likepost, httpOptions).subscribe((data) => {
+        console.log('data', data);
+         },error => {
+            console.log(error);
+        });
+      }
+
+    async unlikepost(item){
+      var url = 'https://buddyfind.herokuapp.com/Unlikepost';
+      var unlikepost = JSON.stringify({
+      userID : this.id,
+      idNewsFeeds : item.idNewsFeeds
+      });
+      const httpOptions = {
+        headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+        })
+        };
+      this.http.post(url, unlikepost, httpOptions).subscribe((data) => {
+        console.log('data', data);
+        
+         },error => {
+            console.log(error);
+        });
+      }
+
+    async addToFav(item) {
+      const toastlike = await this.toastController.create(
+        {message: ' Liked Post ' + item.title,
+      duration: 2000,
+      });
+      const toastunlike = await this.toastController.create(
+        {message: ' Unliked Post ' + item.title,
+      duration: 2000,
+      });
+      var url = 'https://buddyfind.herokuapp.com/CheckLikes';
+      var checklike = JSON.stringify({
+      userID : this.id,
+      idNewsFeeds : item.idNewsFeeds
+      });
+      const httpOptions = {
+        headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+        })
+        };
+      this.http.post(url, checklike, httpOptions).subscribe((data) => {
+        console.log('data', data);
+        //if not liked
+        if (data == false)
+          {
+            toastlike.present(); 
+            this.likepost(item);
+            this.getNewsfeeds();
+          }
+        //if liked
+        else
+          {
+            toastunlike.present(); 
+            this.unlikepost(item);
+            this.getNewsfeeds();
+          }
+        }, error => {
+          console.log(error);
+      });
+    }
+
+    validate1(item)
+      {
+        var link = document.getElementById("v1" + item.idNewsFeeds);
+        //console.log('test',link,item.idNewsFeeds)
+        if(item.userID == this.id) {
+          link.style.visibility = "visible";
+          //console.log('v1',item)
+        }
+          else{
+            link.style.visibility = "hidden";
+            return
+        // for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) {
+          
+        //   var validateuserid = this.NewsFeedsmodel[i]['userID'];
+          
+        //     }
+          }
+        }
+        
+    validate2(item)
+    {
+      var link = document.getElementById("v2" + item.idNewsFeeds);
+      //console.log('test',link,item.idNewsFeeds)
+      if(item.userID == this.id) {
+        link.style.visibility = "visible";
+        //console.log('v2',item)
+      }
+        else{
+          link.style.visibility = "hidden";
+          return
+      // for(var i = 0, len = this.NewsFeedsmodel.length; i < len; i++) {
+        
+      //   var validateuserid = this.NewsFeedsmodel[i]['userID'];
+        
+      //     }
         }
       }
 

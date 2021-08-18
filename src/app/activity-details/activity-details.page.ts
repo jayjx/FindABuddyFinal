@@ -1,6 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Plugins } from '@capacitor/core';
+import { formatDate } from '@angular/common';
+
+const { Storage } = Plugins;
 
 @Component({
   selector: 'app-activity-details',
@@ -8,12 +12,17 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./activity-details.page.scss'],
 })
 export class ActivityDetailsPage implements OnInit {
+  userID: string;
   result: any = [];
 
   UpcomingID: string;
 
   fitnessName: string;
   workoutItems: any = [];
+
+  dateTill: string;
+
+  currentDate = new Date();
 
   constructor(
     private route: ActivatedRoute,
@@ -99,8 +108,10 @@ export class ActivityDetailsPage implements OnInit {
 
     var postData = JSON.stringify({
       UpcomingID: this.UpcomingID,
+      
+      
     });
-
+    console.log(this.UpcomingID);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -128,10 +139,25 @@ export class ActivityDetailsPage implements OnInit {
     this.router.navigate(['tabs/tab2']);
   }
 
-  completed() {
+  async completed() {
+    const { value } = await Storage.get({ key: 'userID' });
+    console.log('tab3userid: ', value);
+    this.userID = value;
+
+    const formatDate1 = formatDate(this.currentDate, 'yyyy-MM-dd  HH:mm:ss' , 'en-US');
+
+    
+
+    console.log(this.result[0]);
+
     var url = 'https://buddy-deploy.herokuapp.com/addCompleted';
     var postData = JSON.stringify({
-      UpcomingID: this.UpcomingID,
+      userID: this.userID,
+      UpcomingID: this.result[0].PlanTypeName,
+      buddy: this.result[0].buddyName,
+      duration: this.result[0].PlanTypeDuration,
+      date: formatDate1,
+      location: this.result[0].location, 
     });
     const httpOptions = {
       headers: new HttpHeaders({
@@ -142,18 +168,19 @@ export class ActivityDetailsPage implements OnInit {
     };
     this.http.post(url, postData, httpOptions).subscribe(
       (data) => {
-        console.log(postData);
+        console.log('postData:', postData);
         console.log(data);
-        if (data == true) {
-          this.result = data;
+        if (data == false) {
+          // this.failed()
+        } else if (data == true) {
+          // this.successful()
           this.delete();
-        } else {
-          console.log('failed');
         }
       },
       (error) => {
         console.log(error);
       }
     );
+    this.router.navigate(['tabs/tab2']);
   }
 }

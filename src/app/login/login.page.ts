@@ -21,6 +21,7 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   id: string;
   userEmail: string; 
+  username: string; 
 
   constructor(private route: ActivatedRoute, public http: HttpClient, private router: Router, private modalController:ModalController, private toast:ToastController,) { 
     this.loginForm = new FormGroup({
@@ -34,7 +35,7 @@ export class LoginPage implements OnInit {
 
   loginButton(){
     this.submitted =true;
-    var url = 'https://buddyfind.herokuapp.com/authentication';
+    var url = 'https://itj-findabuddy.herokuapp.com/authentication';
 
     var email = this.loginForm.value['email']
     var password = this.loginForm.value['password']
@@ -63,7 +64,9 @@ export class LoginPage implements OnInit {
         this.authentication= data        
       for (let userId of this.authentication ) {
         this.id = userId.userID;
+        this.username = userId.username
         console.log('id: ' + this.id)
+        console.log('id: ' + this.username)
         this.setLogin()//session
        // this.modalController.dismiss();
         console.log(this.id)
@@ -82,16 +85,15 @@ export class LoginPage implements OnInit {
   }
   async setLogin() {
     await Storage.set({
-      key: 'userID',
-      value: this.id
+      key: 'userID', 
+      value: this.id, 
+      
+    });
+    await Storage.set({
+      key: 'username', 
+      value: this.username,
     });
   
-    let toast = await this.toast.create({
-      message: 'Login passed ' ,
-      duration: 5000,
-      position: 'top'
-    });
-    return await toast.present();
   
   }
 
